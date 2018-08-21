@@ -14,3 +14,5 @@ head+first+servlets jsp https://download.csdn.net/download/singgel/10575054
 从PAXOS到ZOOKEEPER分布式一致性原理与实践 https://download.csdn.net/download/singgel/10575025  
 
 effective java https://download.csdn.net/download/singgel/10575008
+
+深入浅出MyBatis技术原理与实战 https://download.csdn.net/download/singgel/10616746
