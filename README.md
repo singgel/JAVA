@@ -18,3 +18,11 @@ effective java https://download.csdn.net/download/singgel/10575008
 深入浅出MyBatis技术原理与实战 https://download.csdn.net/download/singgel/10616746
 
 大型网站系统及Java中间件实践 https://download.csdn.net/download/singgel/10621351
+
+深入分析Java Web技术内幕 https://download.csdn.net/download/singgel/10623623
+
+HotSpot实战 https://download.csdn.net/download/singgel/10623740
+
+Java多线程编程核心技术 https://download.csdn.net/download/singgel/10623743
+
+Spring源码深度解析 https://download.csdn.net/download/singgel/10623766
