@@ -26,3 +26,5 @@ HotSpot实战 https://download.csdn.net/download/singgel/10623740
 Java多线程编程核心技术 https://download.csdn.net/download/singgel/10623743
 
 Spring源码深度解析 https://download.csdn.net/download/singgel/10623766
+
+深入解析Spring架构与设计原理 https://download.csdn.net/download/singgel/10637765
