@@ -69,3 +69,38 @@
 
 [java线程池（newFixedThreadPool）线程消失疑问？](https://www.zhihu.com/question/27474985)
 线程池的异常线程会被销毁，然后重新创建新的线程来补位
+
+[OkHttp3线程池相关之Dispatcher中的ExecutorService](https://github.com/soulrelay/InterviewMemoirs/issues/7)
+
+[运维必备：Zookeeper集群“脑裂”问题处理大全](https://mp.weixin.qq.com/s/1NN62CWrCCRpCMNtKsRMvA)
+
+[京东落地DevOps平台时爆发的冲突如何解决？](https://mp.weixin.qq.com/s/Yjs6w9e4dZwYfXkDGqJZ2g)
+
+[银行烟囱式系统难题，如何通过应用集成方式来解决？](https://mp.weixin.qq.com/s/2dxvwzBpD6FsrE7ijzn7zA)
+
+[滴滴实时数仓逐层剖解：实时与离线数据误差<0.5%](https://mp.weixin.qq.com/s/xEUL5ust9btXqiNiMm5wPQ)
+
+[替你踩过Redis缓存的坑，奉上使用规范和监控方法](https://mp.weixin.qq.com/s/R-slZDV2YNTA_M_sctyvZA)
+
+[我在MySQL原厂的那些年都经历了什么？](https://mp.weixin.qq.com/s/HW7tji_fQBeOa7kr2xsmtg)
+
+[数仓引入ClickHouse之后，性能提升了400%！](https://mp.weixin.qq.com/s/mJplgZmU6OZqE30cfJvw7Q)
+
+[分享近期社区的几个经典的JVM问题](https://mp.weixin.qq.com/s/Rbg7OiUByzqq46aLPh1r8A)
+
+[Docker 底层原理浅析](https://mp.weixin.qq.com/s/0jFHlWAeH5avIO2NLpTmGA)
+
+[java.util.ConcurrentModificationException详解](https://www.jianshu.com/p/c5b52927a61a)
+迭代ArrayList的Iterator中有一个变量expectedModCount，该变量会初始化和modCount相等，但如果接下来如果集合进行修改modCount改变，就会造成expectedModCount!=modCount
+Iterator的remove会修改expectedModCount，对单线程有用多线程无用
+
+[Java并发编程：并发容器之CopyOnWriteArrayList](http://www.cnblogs.com/dolphin0520/p/3938914.html)
+CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器
+写操作复制出一个新的容器，然后新的容器里添加元素（加锁），读还是会读到旧的数据（不加锁）
+
+[深入分析ConcurrentHashMap](http://ifeve.com/concurrenthashmap/)
+get方法里将要使用的共享变量都定义成volatile，java内存模型的happen before原则，对volatile字段的写入操作先于读操作
+put方法里需要对共享变量进行写入操作，所以为了线程安全，在操作共享变量时必须得加锁
+count方法先尝试两次不行再加锁，modCount变量，在put , remove和clean方法里操作元素前都会将变量modCount进行加1，那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化。
+
+[为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)
