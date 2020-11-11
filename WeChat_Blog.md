@@ -104,3 +104,18 @@ put方法里需要对共享变量进行写入操作，所以为了线程安全�
 count方法先尝试两次不行再加锁，modCount变量，在put , remove和clean方法里操作元素前都会将变量modCount进行加1，那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化。
 
 [为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)
+
+[gRPC客户端详解](http://liumenghan.github.io/2019/10/07/grpc-in-depth/)
+Thrift的客户端是线程不安全的——这意味着在Spring中无法以单例形式注入到Bean中
+gRPC服务端的Response都是异步形式
+gRPC的客户端有同步阻塞客户端（blockingStub)和异步非阻塞客户端(Stub）两种
+
+[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)
+
+[报警的哲学](https://mp.weixin.qq.com/s/lJRPt7I0SeUwZ4HhVZn8AQ)
+
+[ARM环境下Java应用卡顿优化案例](https://mp.weixin.qq.com/s/dqHTbLk9ETnBPQh2WrUmTg)
+
+[越来越复杂，为什么是中台？](https://mp.weixin.qq.com/s/902mLsl17r6ut3qRjvZAtg)
+
+[一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)
