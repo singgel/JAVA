@@ -119,3 +119,9 @@ gRPC的客户端有同步阻塞客户端（blockingStub)和异步非阻塞客户
 [越来越复杂，为什么是中台？](https://mp.weixin.qq.com/s/902mLsl17r6ut3qRjvZAtg)
 
 [一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)
+
+[Java8之Consumer、Supplier、Predicate和Function攻略](https://www.cnblogs.com/SIHAIloveYAN/p/11288064.html)
+
+[java8 Stream的实现原理 (从零开始实现一个stream流)](https://www.cnblogs.com/xiaoxiongcanguan/p/10511233.html)
+
+[运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)
