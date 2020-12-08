@@ -51,12 +51,12 @@
 
 [java.util.ConcurrentModificationException详解](https://www.jianshu.com/p/c5b52927a61a)  
 > 迭代ArrayList的Iterator中有一个变量expectedModCount  
-该变量会初始化和modCount相等，但如果接下来如果集合进行修改modCount改变，就会造成expectedModCount!=modCount  
-Iterator的remove会修改expectedModCount，对单线程有用多线程无用  
+> 该变量会初始化和modCount相等，但如果接下来如果集合进行修改modCount改变，就会造成expectedModCount!=modCount  
+> Iterator的remove会修改expectedModCount，对单线程有用多线程无用  
 
 [Java并发编程：并发容器之CopyOnWriteArrayList](http://www.cnblogs.com/dolphin0520/p/3938914.html)  
-CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器
-写操作复制出一个新的容器，然后新的容器里添加元素（加锁），读还是会读到旧的数据（不加锁）
+> CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器
+> 写操作复制出一个新的容器，然后新的容器里添加元素（加锁），读还是会读到旧的数据（不加锁）
 
 [深入分析ConcurrentHashMap](http://ifeve.com/concurrenthashmap/)  
 get方法里将要使用的共享变量都定义成volatile，java内存模型的happen before原则，对volatile字段的写入操作先于读操作
