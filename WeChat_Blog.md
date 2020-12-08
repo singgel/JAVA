@@ -50,8 +50,9 @@
 [Java ConcurrentHashMap 高并发安全实现原理解析](https://mp.weixin.qq.com/s/4sz6sTPvBigR_1g8piFxug)  
 
 [java.util.ConcurrentModificationException详解](https://www.jianshu.com/p/c5b52927a61a)  
-> 迭代ArrayList的Iterator中有一个变量expectedModCount，该变量会初始化和modCount相等，但如果接下来如果集合进行修改modCount改变，就会造成expectedModCount!=modCount
-Iterator的remove会修改expectedModCount，对单线程有用多线程无用
+> 迭代ArrayList的Iterator中有一个变量expectedModCount  
+该变量会初始化和modCount相等，但如果接下来如果集合进行修改modCount改变，就会造成expectedModCount!=modCount  
+Iterator的remove会修改expectedModCount，对单线程有用多线程无用  
 
 [Java并发编程：并发容器之CopyOnWriteArrayList](http://www.cnblogs.com/dolphin0520/p/3938914.html)  
 CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器
