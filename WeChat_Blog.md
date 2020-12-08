@@ -55,13 +55,14 @@
 > Iterator的remove会修改expectedModCount，对单线程有用多线程无用  
 
 [Java并发编程：并发容器之CopyOnWriteArrayList](http://www.cnblogs.com/dolphin0520/p/3938914.html)  
-> CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器
+> CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器  
 > 写操作复制出一个新的容器，然后新的容器里添加元素（加锁），读还是会读到旧的数据（不加锁）
 
 [深入分析ConcurrentHashMap](http://ifeve.com/concurrenthashmap/)  
-get方法里将要使用的共享变量都定义成volatile，java内存模型的happen before原则，对volatile字段的写入操作先于读操作
-put方法里需要对共享变量进行写入操作，所以为了线程安全，在操作共享变量时必须得加锁
-count方法先尝试两次不行再加锁，modCount变量，在put , remove和clean方法里操作元素前都会将变量modCount进行加1，那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化。
+> get方法里将要使用的共享变量都定义成volatile，java内存模型的happen before原则，对volatile字段的写入操作先于读操作  
+> put方法里需要对共享变量进行写入操作，所以为了线程安全，在操作共享变量时必须得加锁  
+> count方法先尝试两次不行再加锁，modCount变量，在put, remove和clean方法里操作元素前都会将变量modCount进行加1  
+> 那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化
 
 [ARM环境下Java应用卡顿优化案例](https://mp.weixin.qq.com/s/dqHTbLk9ETnBPQh2WrUmTg)  
 
@@ -88,19 +89,19 @@ count方法先尝试两次不行再加锁，modCount变量，在put , remove和c
 [奇怪的知识： okhttp 是如何支持 Http2 的？](https://mp.weixin.qq.com/s/TeQhe4T4wRjdAEPz6Ne45g)  
 
 [gRPC客户端详解](http://liumenghan.github.io/2019/10/07/grpc-in-depth/)  
-Thrift的客户端是线程不安全的——这意味着在Spring中无法以单例形式注入到Bean中
-gRPC服务端的Response都是异步形式
-gRPC的客户端有同步阻塞客户端（blockingStub)  和异步非阻塞客户端(Stub）两种
+> Thrift的客户端是线程不安全的——这意味着在Spring中无法以单例形式注入到Bean中  
+> gRPC服务端的Response都是异步形式  
+> gRPC的客户端有同步阻塞客户端（blockingStub)  和异步非阻塞客户端(Stub）两种  
 
 [grpc原理](https://www.jianshu.com/p/9e57da13b737)  
 
 [深入了解 gRPC：协议](https://mp.weixin.qq.com/s/GEaTUTp_wuILYTVbZvJo7g)  
 
 [巧用 Protobuf 反射来优化代码，拒做 PB Boy](https://mp.weixin.qq.com/s/ALhSKrLwNdA_GkozJQXn5g)  
-获取 PB 中所有非空字段：bool has_field = reflection->HasField(message, field)  ;
-将字段校验规则放置在 Proto 中：optional string name   =1 [(field_rule)  .length_min = 5, (field_rule)  .id = 1];
-基于 PB 反射的前端页面自动生成方案
-通用存储系统(根据反射取出K/V)  
+> 获取 PB 中所有非空字段：bool has_field = reflection->HasField(message, field)  
+> 将字段校验规则放置在 Proto 中：optional string name   =1 [(field_rule)  .length_min = 5, (field_rule)  .id = 1]  
+> 基于 PB 反射的前端页面自动生成方案  
+> 通用存储系统(根据反射取出K/V)    
 
 [一文讲懂进程间通信的几种方式](https://mp.weixin.qq.com/s/TZJ0N8iDjU3dEoU6W1GctQ)  
 
@@ -125,11 +126,11 @@ gRPC的客户端有同步阻塞客户端（blockingStub)  和异步非阻塞客�
 [运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)  
 
 [Codis VS Redis Cluster：我该选择哪一个集群方案](https://time.geekbang.org/column/article/85495ce4171a7dc638c424414e229cac/share)  
-codis提供了
-1.dashboard的fe界面运维简单
-2.基于zookeeper的proxy代理slot-mapping映射
-3.基于sentinel的主从切换高可用
-codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子性方案），对比redis-cluster来说相对应用较早
+> codis提供了  
+> 1.dashboard的fe界面运维简单  
+> 2.基于zookeeper的proxy代理slot-mapping映射  
+> 3.基于sentinel的主从切换高可用  
+> codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子性方案），对比redis-cluster来说相对应用较早  
 
 [Redis 缓存性能实践及总结](https://mp.weixin.qq.com/s/bsAw0VKhP_SYngvKMoByAQ)  
 
@@ -156,16 +157,16 @@ codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子
 [一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)  
 
 [ElasticSearch使用规范beta版](https://mp.weixin.qq.com/s/yCTNH1hMp6iOvHgh9vWg6A)  
-非日志型(搜索型、线上业务型)  的shard容量在10~30GB（建议在10G）
-日志型的shard容量在30~100GB（建议30G）
-单个shard的文档个数不能超过21亿左右(Integer.MAX_VALUE - 128)  
+> 非日志型(搜索型、线上业务型)  的shard容量在10~30GB（建议在10G） 
+> 日志型的shard容量在30~100GB（建议30G） 
+> 单个shard的文档个数不能超过21亿左右(Integer.MAX_VALUE - 128)   
 
-一个节点管理的shard数不要超过200个
-routing id不均衡：集群容量和访问不均衡，对于分布式存储是致命的。
-拒绝大聚合 ：ES计算都在JVM内存中完成。
-拒绝模糊查询：es一大杀手
-拒绝深度分页
-禁止查询 indexName-*
+> 一个节点管理的shard数不要超过200个  
+> routing id不均衡：集群容量和访问不均衡，对于分布式存储是致命的  
+> 拒绝大聚合 ：ES计算都在JVM内存中完成  
+> 拒绝模糊查询：es一大杀手  
+> 拒绝深度分页  
+> 禁止查询 indexName-*  
 
 [干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
 
@@ -184,16 +185,17 @@ routing id不均衡：集群容量和访问不均衡，对于分布式存储是�
 [vivo 基于原生 RabbitMQ 的高可用架构实践](https://mp.weixin.qq.com/s/7s9-RsLWgiVvw28U51J0bA)  
 
 [简单理解 Kafka 的消息可靠性策略](https://mp.weixin.qq.com/s/T6gCc8OBgyV-yeAg_MUzPQ)  
-ISR : leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica
-HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)  , 在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)   ；
-LEO: LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset；
-leader HW: 该 Partititon 所有副本的 LEO 最小值；
-follower HW: min(follower 自身 LEO 和 leader HW)  ；
-Leader HW = 所有副本 LEO 最小值；
-Follower HW = min(follower 自身 LEO 和 leader HW)  
-Leader 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO
-在kafka配置为AP系统的情况下发生截断发生的概率会大大提升
-Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中
+> ISR : leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica  
+HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)
+在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)  
+> LEO: LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset  
+> leader HW: 该 Partititon 所有副本的 LEO 最小值  
+> follower HW: min(follower 自身 LEO 和 leader HW)  
+> Leader HW = 所有副本 LEO 最小值  
+> Follower HW = min(follower 自身 LEO 和 leader HW)    
+> Leader 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO  
+> 在kafka配置为AP系统的情况下发生截断发生的概率会大大提升  
+> Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中  
 
 [Linux Page Cache调优在Kafka中的应用](https://mp.weixin.qq.com/s/MaeXn-kmgLUah78brglFkg)  
 
@@ -266,16 +268,16 @@ Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同�
 [数仓引入ClickHouse之后，性能提升了400%！](https://mp.weixin.qq.com/s/mJplgZmU6OZqE30cfJvw7Q)  
 
 [pache Kylin的实践与优化](https://mp.weixin.qq.com/s/0S1ih4SJ7xEu0h557yJmgA)  
-美团之前没有好好的看kylin的源码和配置参数，导致线上的CPU、内存、文件数没有规划
-引擎升级至：spark（最近是flink了） 数据源采用hive 全局字典依赖配置 
+> 美团之前没有好好的看kylin的源码和配置参数，导致线上的CPU、内存、文件数没有规划  
+> 引擎升级至：spark（最近是flink了） 数据源采用hive 全局字典依赖配置  
 
 [应对万亿数据上亿并发！字节跳动的图数据库研发实践](https://mp.weixin.qq.com/s/WyOMumZyqs_ouaPJpJouNg)  
-自研的图数据库：解决了热点无问题，性能单节点R:200k W:10k
-不支持ACID事务、总之还在发展中
+> 自研的图数据库：解决了热点无问题，性能单节点R:200k W:10k  
+> 不支持ACID事务、总之还在发展中  
 
 [基于Kafka+Flink平台化设计，实时数仓还能这样建](https://mp.weixin.qq.com/s/0wF_C8mpYBb8KFB0KhwodA)  
-网易云音乐将实时计算的多个sink下kafkasource的重复消费问题：增加了一个data update标记同一个表计算合并
-多个kafka集群部署在一个交换机下，离线计算和实时计算等其他情况造成的交换机带宽问题：拆分机房规划
+> 网易云音乐将实时计算的多个sink下kafkasource的重复消费问题：增加了一个data update标记同一个表计算合并  
+> 多个kafka集群部署在一个交换机下，离线计算和实时计算等其他情况造成的交换机带宽问题：拆分机房规划  
 
 [HBase数据迁移到Kafka？这种逆向操作你懵逼了吗？](https://mp.weixin.qq.com/s/-J9nQs8IjEOcSj849tYigg)  
 
