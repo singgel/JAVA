@@ -41,7 +41,7 @@
 [你可能未曾使用的新 Java 特性](https://mp.weixin.qq.com/s/uSEkyQ6AGffxIgEFJzwHvQ)  
 
 [java线程池（newFixedThreadPool）线程消失疑问？](https://www.zhihu.com/question/27474985)  
-线程池的异常线程会被销毁，然后重新创建新的线程来补位
+> 线程池的异常线程会被销毁，然后重新创建新的线程来补位
 
 [分享近期社区的几个经典的JVM问题](https://mp.weixin.qq.com/s/Rbg7OiUByzqq46aLPh1r8A)  
 
