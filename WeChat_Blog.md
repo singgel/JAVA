@@ -24,9 +24,13 @@
 
 [Go netpoller 网络模型之源码全面解析](https://mp.weixin.qq.com/s/HNPeffn08QovQwtUH1qkbQ)  
 
+[Linux 内核使用 Lockdep 工具来检测和特别是预测锁的死锁场景](https://mp.weixin.qq.com/s/NA-yPnHlNEKKem9PswGAWQ)  
+
+[揭开内存管理的迷雾](https://mp.weixin.qq.com/s/4FF5uH0YVTAM9-llKTAWKA)  
+
 ## JVM GC JAVA
 
-[Twitter短链服务大bug: 预连到错误域名](https://mp.weixin.qq.com/s/W5G_LPr6cBqHBO8qnm0B3g)    
+[Twitter短链服务大bug: 预连到错误域名](https://mp.weixin.qq.com/s/W5G_LPr6cBqHBO8qnm0B3g)  
 
 [内存泄漏事故：一顿debug猛如虎，定睛一看原地杵](https://mp.weixin.qq.com/s/l6prJDzbNDg1QkKc9fWJyg)  
 
@@ -68,7 +72,7 @@
 
 [Java8之Consumer、Supplier、Predicate和Function攻略](https://www.cnblogs.com/SIHAIloveYAN/p/11288064.html)  
 
-[java8 Stream的实现原理 (从零开始实现一个stream流)  ](https://www.cnblogs.com/xiaoxiongcanguan/p/10511233.html)  
+[java8 Stream的实现原理 (从零开始实现一个stream流)](https://www.cnblogs.com/xiaoxiongcanguan/p/10511233.html)  
 
 [Java 8 Stream原理解析](https://mp.weixin.qq.com/s/ykN7tCur0b9KXNOJtvqQ-g)  
 
@@ -101,7 +105,7 @@
 > 获取 PB 中所有非空字段：bool has_field = reflection->HasField(message, field)  
 > 将字段校验规则放置在 Proto 中：optional string name   =1 [(field_rule)  .length_min = 5, (field_rule)  .id = 1]  
 > 基于 PB 反射的前端页面自动生成方案  
-> 通用存储系统(根据反射取出K/V)    
+> 通用存储系统(根据反射取出K/V)  
 
 [一文讲懂进程间通信的几种方式](https://mp.weixin.qq.com/s/TZJ0N8iDjU3dEoU6W1GctQ)  
 
@@ -110,100 +114,6 @@
 [Tomcat 9.0.26 高并发场景下DeadLock问题排查与修复](https://mp.weixin.qq.com/s/GvFeFXsINaQjymnbXkOovw)  
 
 [Tomcat 应用中并行流带来的类加载问题](https://mp.weixin.qq.com/s/f-X3n9cvDyU5f5NYH6mhxQ)  
-
-## REDIS ES MYSQL MongoDB
-
-[Redis小功能大用处(1)  -stat_expired_time_cap_reached_count](https://mp.weixin.qq.com/s/3UxXnSus0HTlA0ndpLZPgg)  
-
-[Redis常见客户端异常汇总(Jedis篇)  ](https://mp.weixin.qq.com/s/T-BBlAQ4B5qj0VCTKUMgXA)  
-
-[Redis在Linux系统的配置优化](https://mp.weixin.qq.com/s/eN8qQn9HjeI1BV-MMFcWiw)  
-
-[Redis module功能介绍](https://mp.weixin.qq.com/s/uN1Iyha96TCG7Ff2ZRW1Dw)  
-
-[败家玩意儿！Redis 竟然浪费了这么多内存！](https://mp.weixin.qq.com/s/efPjJjdDHW6QOhSfHOioRA)
-
-[从1到3分布式Redis电商实战&缓存穿透&缓存雪崩&缓存失效终极解决](https://www.bilibili.com/video/BV17T4y1F79p?p=1&share_medium=android&share_plat=android&share_source=COPY&share_tag=s_i&timestamp=1607301887&unique_k=sVref8)  
-
-[替你踩过Redis缓存的坑，奉上使用规范和监控方法](https://mp.weixin.qq.com/s/R-slZDV2YNTA_M_sctyvZA)  
-
-[运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)  
-
-[一万字详解 Redis Cluster Gossip 协议](https://segmentfault.com/a/1190000038400015)  
-
-[Codis VS Redis Cluster：我该选择哪一个集群方案](https://time.geekbang.org/column/article/85495ce4171a7dc638c424414e229cac/share)  
-> codis提供了  
-> 1.dashboard的fe界面运维简单  
-> 2.基于zookeeper的proxy代理slot-mapping映射  
-> 3.基于sentinel的主从切换高可用  
-> codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子性方案），对比redis-cluster来说相对应用较早  
-
-[Redis 缓存性能实践及总结](https://mp.weixin.qq.com/s/bsAw0VKhP_SYngvKMoByAQ)  
-
-[pika集群水平扩展——让性能容量不再受限](https://mp.weixin.qq.com/s/xksAosZSpLVjb1JuX5XhRQ)  
-
-[超全的数据库建表/SQL/索引规范，适合贴在工位上！](https://mp.weixin.qq.com/s/-_m-OJ_PUXrw8Gey2ZA9aA)  
-
-[我在MySQL原厂的那些年都经历了什么？](https://mp.weixin.qq.com/s/HW7tji_fQBeOa7kr2xsmtg)  
-
-[高并发场景下，百万级订单量系统的分库分表重构经历](https://mp.weixin.qq.com/s/Mp6yyS3VVj2v1D1gxuojwA)  
-
-[3年部署3000套PG实例的架构设计与踩坑经验](https://mp.weixin.qq.com/s/OPQr248yiwFI9Q6vLx9tZw)  
-
-[简述3种CQRS架构模式](https://mp.weixin.qq.com/s/pToMvg5tNJKfRmJdNfXicw)  
-
-[InnoDB 事务加锁分析](https://mp.weixin.qq.com/s/S7MhlsZveBHRSQhq5aTIJA)  
-
-[MySQL 的 crash-safe 原理解析](https://mp.weixin.qq.com/s/5i9wmJs4_Er7RaYfNnETyA)  
-
-[MySQL 8 新特性之Clone Plugin](https://mp.weixin.qq.com/s/_HqRXhQX_6e0boACzcAH8g)  
-
-[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
-
-[一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)  
-
-[ElasticSearch使用规范beta版](https://mp.weixin.qq.com/s/yCTNH1hMp6iOvHgh9vWg6A)  
-> 非日志型(搜索型、线上业务型)  的shard容量在10~30GB（建议在10G） 
-> 日志型的shard容量在30~100GB（建议30G） 
-> 单个shard的文档个数不能超过21亿左右(Integer.MAX_VALUE - 128)   
-
-> 一个节点管理的shard数不要超过200个  
-> routing id不均衡：集群容量和访问不均衡，对于分布式存储是致命的  
-> 拒绝大聚合 ：ES计算都在JVM内存中完成  
-> 拒绝模糊查询：es一大杀手  
-> 拒绝深度分页  
-> 禁止查询 indexName-*  
-
-[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
-
-[分布式搜索引擎Elasticsearch的架构分析](https://mp.weixin.qq.com/s/N_y7BxbO9pCTrgJbDq4bOA)  
-
-[连环触发！MongoDB核心集群雪崩故障背后竟是……](https://mp.weixin.qq.com/s/3bzKacpe3TD6k0y4pFXHCQ)  
-
-## KAFKA MQ ZOOKEEPER
-
-[运维必备：Zookeeper集群“脑裂”问题处理大全](https://mp.weixin.qq.com/s/1NN62CWrCCRpCMNtKsRMvA)  
-
-[运维必备：Zookeeper集群“脑裂”问题处理大全](https://mp.weixin.qq.com/s/1NN62CWrCCRpCMNtKsRMvA)  
-
-[这样做RabbitMQ高可用，业务流量猛增10倍也不怂](https://mp.weixin.qq.com/s/vLTi_VRjeuW_ekDKzcE5ug)  
-
-[vivo 基于原生 RabbitMQ 的高可用架构实践](https://mp.weixin.qq.com/s/7s9-RsLWgiVvw28U51J0bA)  
-
-[简单理解 Kafka 的消息可靠性策略](https://mp.weixin.qq.com/s/T6gCc8OBgyV-yeAg_MUzPQ)  
-> ISR : leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica  
-> HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)
-在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)  
-> LEO: LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset  
-> leader HW: 该 Partititon 所有副本的 LEO 最小值  
-> follower HW: min(follower 自身 LEO 和 leader HW)  
-> Leader HW = 所有副本 LEO 最小值  
-> Follower HW = min(follower 自身 LEO 和 leader HW)    
-> Leader 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO  
-> 在kafka配置为AP系统的情况下发生截断发生的概率会大大提升  
-> Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中  
-
-[Linux Page Cache调优在Kafka中的应用](https://mp.weixin.qq.com/s/MaeXn-kmgLUah78brglFkg)  
 
 ## Hystrix Seata Sentinel
 
@@ -232,6 +142,8 @@
 [深入浅出开源监控系统Prometheus（上）](https://mp.weixin.qq.com/s/4NC4spF6cEvXuIBKVbIU7A)  
 
 [OpenTSDB 数据存储详解](https://mp.weixin.qq.com/s/qayKiwk5QAIWI7-nyD3FVA)  
+
+[美图全链路监控实战，成本低还能直接落地](https://mp.weixin.qq.com/s/fVZ_xlQ9UeflNYsdMjG0cw)  
 
 ## CI CD UnitTest
 
@@ -263,6 +175,111 @@
 
 [深入理解 web 协议(一)  - http 包体传输](https://mp.weixin.qq.com/s/WlT8070LlrnSODFRDwZsUQ)  
 
+## REDIS ES MYSQL MongoDB
+
+[Redis小功能大用处(1)  -stat_expired_time_cap_reached_count](https://mp.weixin.qq.com/s/3UxXnSus0HTlA0ndpLZPgg)  
+
+[Redis常见客户端异常汇总(Jedis篇)](https://mp.weixin.qq.com/s/T-BBlAQ4B5qj0VCTKUMgXA)  
+
+[Redis在Linux系统的配置优化](https://mp.weixin.qq.com/s/eN8qQn9HjeI1BV-MMFcWiw)  
+
+[Redis module功能介绍](https://mp.weixin.qq.com/s/uN1Iyha96TCG7Ff2ZRW1Dw)  
+
+[败家玩意儿！Redis 竟然浪费了这么多内存！](https://mp.weixin.qq.com/s/efPjJjdDHW6QOhSfHOioRA)
+
+[从1到3分布式Redis电商实战&缓存穿透&缓存雪崩&缓存失效终极解决](https://www.bilibili.com/video/BV17T4y1F79p?p=1&share_medium=android&share_plat=android&share_source=COPY&share_tag=s_i&timestamp=1607301887&unique_k=sVref8)  
+
+[替你踩过Redis缓存的坑，奉上使用规范和监控方法](https://mp.weixin.qq.com/s/R-slZDV2YNTA_M_sctyvZA)  
+
+[运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)  
+
+[一万字详解 Redis Cluster Gossip 协议](https://segmentfault.com/a/1190000038400015)  
+
+[Codis VS Redis Cluster：我该选择哪一个集群方案](https://time.geekbang.org/column/article/85495ce4171a7dc638c424414e229cac/share)  
+> codis提供了  
+> 1.dashboard的fe界面运维简单  
+> 2.基于zookeeper的proxy代理slot-mapping映射  
+> 3.基于sentinel的主从切换高可用  
+> codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子性方案），对比redis-cluster来说相对应用较早  
+
+[Redis 缓存性能实践及总结](https://mp.weixin.qq.com/s/bsAw0VKhP_SYngvKMoByAQ)  
+
+[Redis速度快的原因：几点图解总结](https://mp.weixin.qq.com/s/FtfAqXXDef6-bhuGyPDK7w)  
+
+[pika集群水平扩展——让性能容量不再受限](https://mp.weixin.qq.com/s/xksAosZSpLVjb1JuX5XhRQ)  
+
+[Spark-Redis入门到解决执行海量数据插入、查询作业时碰到的问题](https://mp.weixin.qq.com/s/K84I-mUf7U9Iej6h3un-bQ)  
+
+[超全的数据库建表/SQL/索引规范，适合贴在工位上！](https://mp.weixin.qq.com/s/-_m-OJ_PUXrw8Gey2ZA9aA)  
+
+[我在MySQL原厂的那些年都经历了什么？](https://mp.weixin.qq.com/s/HW7tji_fQBeOa7kr2xsmtg)  
+
+[高并发场景下，百万级订单量系统的分库分表重构经历](https://mp.weixin.qq.com/s/Mp6yyS3VVj2v1D1gxuojwA)  
+
+[3年部署3000套PG实例的架构设计与踩坑经验](https://mp.weixin.qq.com/s/OPQr248yiwFI9Q6vLx9tZw)  
+
+[简述3种CQRS架构模式](https://mp.weixin.qq.com/s/pToMvg5tNJKfRmJdNfXicw)  
+
+[InnoDB 事务加锁分析](https://mp.weixin.qq.com/s/S7MhlsZveBHRSQhq5aTIJA)  
+
+[MySQL 的 crash-safe 原理解析](https://mp.weixin.qq.com/s/5i9wmJs4_Er7RaYfNnETyA)  
+
+[MySQL 8 新特性之Clone Plugin](https://mp.weixin.qq.com/s/_HqRXhQX_6e0boACzcAH8g)  
+
+[MySQL 索引知识点总结](https://mp.weixin.qq.com/s/QduIxKOykMmoZp13UGF1XQ)  
+
+[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
+
+[一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)  
+
+[ElasticSearch使用规范beta版](https://mp.weixin.qq.com/s/yCTNH1hMp6iOvHgh9vWg6A)  
+> 非日志型(搜索型、线上业务型)  的shard容量在10~30GB（建议在10G）  
+> 日志型的shard容量在30~100GB（建议30G）  
+> 单个shard的文档个数不能超过21亿左右(Integer.MAX_VALUE - 128)  
+> 一个节点管理的shard数不要超过200个  
+> routing id不均衡：集群容量和访问不均衡，对于分布式存储是致命的  
+> 拒绝大聚合 ：ES计算都在JVM内存中完成  
+> 拒绝模糊查询：es一大杀手  
+> 拒绝深度分页  
+> 禁止查询 indexName-*  
+
+[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
+
+[分布式搜索引擎Elasticsearch的架构分析](https://mp.weixin.qq.com/s/N_y7BxbO9pCTrgJbDq4bOA)  
+
+[连环触发！MongoDB核心集群雪崩故障背后竟是……](https://mp.weixin.qq.com/s/3bzKacpe3TD6k0y4pFXHCQ)  
+
+## KAFKA MQ ZOOKEEPER
+
+[运维必备：Zookeeper集群“脑裂”问题处理大全](https://mp.weixin.qq.com/s/1NN62CWrCCRpCMNtKsRMvA)  
+
+[运维必备：Zookeeper集群“脑裂”问题处理大全](https://mp.weixin.qq.com/s/1NN62CWrCCRpCMNtKsRMvA)  
+
+[这样做RabbitMQ高可用，业务流量猛增10倍也不怂](https://mp.weixin.qq.com/s/vLTi_VRjeuW_ekDKzcE5ug)  
+
+[vivo 基于原生 RabbitMQ 的高可用架构实践](https://mp.weixin.qq.com/s/7s9-RsLWgiVvw28U51J0bA)  
+
+[简单理解 Kafka 的消息可靠性策略](https://mp.weixin.qq.com/s/T6gCc8OBgyV-yeAg_MUzPQ)  
+> ISR : leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica  
+> HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)
+在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)  
+> LEO: LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset  
+> leader HW: 该 Partititon 所有副本的 LEO 最小值  
+> follower HW: min(follower 自身 LEO 和 leader HW)  
+> Leader HW = 所有副本 LEO 最小值  
+> Follower HW = min(follower 自身 LEO 和 leader HW)  
+> Leader 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO  
+> 在kafka配置为AP系统的情况下发生截断发生的概率会大大提升  
+> Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中  
+
+[Linux Page Cache调优在Kafka中的应用](https://mp.weixin.qq.com/s/MaeXn-kmgLUah78brglFkg)  
+
+[Kafka Exactly-Once 之事务性实现](http://matt33.com/2018/11/04/kafka-transaction/)  
+
+[支持百万级TPS，Kafka是怎么做到的？](https://mp.weixin.qq.com/s/UeRLaoJyL6WOmvNfy5wujQ)
+
+[知乎基于Kubernetes的kafka平台的设计和实现](https://mp.weixin.qq.com/s/J6Rf0x2WQcGVWysf0R4-YA)  
+
 ## HIVE HBASE FLINK KYLIN
 
 [万亿数据下的多维实时分析系统，如何做到亚秒级响应](https://mp.weixin.qq.com/s/D1Ta8lZI7bDRhLTFbEuohw)  
@@ -287,6 +304,8 @@
 
 [HBase数据迁移到Kafka？这种逆向操作你懵逼了吗？](https://mp.weixin.qq.com/s/-J9nQs8IjEOcSj849tYigg)  
 
+[知乎 HBase 实践](https://mp.weixin.qq.com/s/U1zCtD0fJIBJR2PNA_3JQA)
+
 ## serviceMesh K8S Docker
 
 [Service Mesh在腾讯云中间件团队的实践与思考](https://mp.weixin.qq.com/s/uRgPfHgaiba1MuSxzkj4tQ)  
@@ -308,6 +327,8 @@
 [谷歌可靠性工程的“封神”之路：从大规模分布式系统高效故障响应说起](https://mp.weixin.qq.com/s/WRx9ZKumRh-JdjAZuxGwPw)  
 
 [复杂环境下落地Service Mesh的挑战与实践](https://mp.weixin.qq.com/s/Z-Nv7XId7EbPpH8UDjWxCQ)  
+
+[vivo 微服务 API 网关架构实践](https://mp.weixin.qq.com/s/5U1rgpcW21LDYzv8K9EX7g)  
 
 ## delete later
 
@@ -331,4 +352,6 @@
 
 [一文了解 Consistent Hash](https://mp.weixin.qq.com/s/LGLqEOlGExKob8xEXXWckQ)  
 
-[分布式高并发服务三种常用限流方案简介](https://mp.weixin.qq.com/s/zIhQuK1jmHcn5eIqhJfNkw)
+[分布式高并发服务三种常用限流方案简介](https://mp.weixin.qq.com/s/zIhQuK1jmHcn5eIqhJfNkw)  
+
+[领域驱动设计框架Axon实践](https://mp.weixin.qq.com/s/g91zvzrpdPtkwP_5iBUpMw)  
