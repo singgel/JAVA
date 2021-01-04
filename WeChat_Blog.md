@@ -160,18 +160,18 @@
 [彻底弄懂TCP协议：从三次握手说起](https://mp.weixin.qq.com/s/6LiZGMt2KRiIoMaLwx-lkQ)  
 
 [一个有关tcp的非常有意思的问题](https://mp.weixin.qq.com/s/7TbCIu3MtL4BNo06Ad8cDA)  
-客户端在第一次write之前，服务端的socket收到fin包，进入到CLOSE_WAIT状态  
-此时，其实并不能说明服务端已经完全关闭了连接，它还有可能是发送fin包，只是为了关闭其send端，但它还是可以读的，所以客户端理应也可以继续写。  
+> 客户端在第一次write之前，服务端的socket收到fin包，进入到CLOSE_WAIT状态  
+> 此时，其实并不能说明服务端已经完全关闭了连接，它还有可能是发送fin包，只是为了关闭其send端，但它还是可以读的，所以客户端理应也可以继续写。  
 
 [一文读懂 HTTP/1HTTP/2HTTP/3](https://mp.weixin.qq.com/s/fy84edOix5tGgcvdFkJi2w)  
 
 [白话http2的多路复用](https://mp.weixin.qq.com/s/-mg4AD4-ea_W3aUFchSQIQ)  
 
 [移动端APM网络监控与优化方案](https://mp.weixin.qq.com/s/MnlxrUwB57lqE1aExr0iGA)  
-网络状况较好时，HTTP2.0多路复用，带来了性能上的优势，但在网络不稳定时，HTTP1.1错误率低于HTTP2.0。
-1. 多域名连接共享，实现0RTT多路复用。
-2. 避免了DNS解析，防止DNS劫持。
-3. protobuf编码私有协议，节省流量。
+> 网络状况较好时，HTTP2.0多路复用，带来了性能上的优势，但在网络不稳定时，HTTP1.1错误率低于HTTP2.0。
+> 1. 多域名连接共享，实现0RTT多路复用。
+> 2. 避免了DNS解析，防止DNS劫持。
+> 3. protobuf编码私有协议，节省流量。
 
 [深入理解web协议(二)  ：DNS、WebSocket](https://mp.weixin.qq.com/s/AkbAN4UZLDf841g1ZLFPBQ)  
 
@@ -219,10 +219,10 @@
 [超全的数据库建表/SQL/索引规范，适合贴在工位上！](https://mp.weixin.qq.com/s/-_m-OJ_PUXrw8Gey2ZA9aA)  
 
 [让MySQL飞起来！别小看这21种写SQL的好习惯](https://mp.weixin.qq.com/s/snV9i2qUR1yUje80YzxwOg)
-操作delete或者update语句，加个limit  
-SQL命令行修改数据，养成begin + commit 事务的习惯  
-写完SQL先explain查看执行计划  
-如果修改/更新数据过多，考虑批量进行  
+> 操作delete或者update语句，加个limit  
+> SQL命令行修改数据，养成begin + commit 事务的习惯  
+> 写完SQL先explain查看执行计划  
+> 如果修改/更新数据过多，考虑批量进行  
 
 [我在MySQL原厂的那些年都经历了什么？](https://mp.weixin.qq.com/s/HW7tji_fQBeOa7kr2xsmtg)  
 
@@ -241,8 +241,8 @@ SQL命令行修改数据，养成begin + commit 事务的习惯
 [MySQL 索引知识点总结](https://mp.weixin.qq.com/s/QduIxKOykMmoZp13UGF1XQ)  
 
 [API 分页设计与实现](https://mp.weixin.qq.com/s/TQ248e9171jOHSYxdgLBWA)
-在数据库中有一个游标（cursor）的概念，它是一个指向行的指针，然后可以告诉数据库："在这个游标之后返回 100 行"。  
-使用游标的另一个原因是避免由于并发编辑而导致元素重复或跳过的问题,而不用担心新的记录进来扰乱你的分页。  
+> 在数据库中有一个游标（cursor）的概念，它是一个指向行的指针，然后可以告诉数据库："在这个游标之后返回 100 行"。  
+> 使用游标的另一个原因是避免由于并发编辑而导致元素重复或跳过的问题,而不用担心新的记录进来扰乱你的分页。  
 
 [干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
 
@@ -272,9 +272,9 @@ SQL命令行修改数据，养成begin + commit 事务的习惯
 [深入浅出 ZooKeeper](https://mp.weixin.qq.com/s/umJXy8SXG9r5wYFPPle_WA)  
 
 [基于Consul服务注册中心：一次故障分析及优化](https://mp.weixin.qq.com/s/j1F6KU-q3B890S5tEbTH5A)  
-首先网络抖动，导致大量PreparedQuery请求积压在Server中，同时也造成了大量的goroutine和内存使用  
-在网络恢复之后，积压的PreparedQuery继续执行，这些goroutine在执行时都会更新metrics从而去获取全局的sync.Mutex，此时切换到starvation模式并且性能下降，大量时间都在等待sync.Mutex，请求阻塞超时；除了积压的goroutine，新的PreparedQuery还在不停接收，获取锁时同样被阻塞，结果是sync.Mutex保持在starvation模式无法自动恢复；  
-另一方面raft代码运行会依赖定时器、超时、节点间消息的及时传递与处理，并且这些超时通常是秒、毫秒级别的，但metrics代码阻塞过久，直接导致时序相关的逻辑无法正常运行。
+> 首先网络抖动，导致大量PreparedQuery请求积压在Server中，同时也造成了大量的goroutine和内存使用  
+> 在网络恢复之后，积压的PreparedQuery继续执行，这些goroutine在执行时都会更新metrics从而去获取全局的sync.Mutex，此时切换到starvation模式并且性能下降，> 大量时间都在等待sync.Mutex，请求阻塞超时；除了积压的goroutine，新的PreparedQuery还在不停接收，获取锁时同样被阻塞，结果是sync.Mutex保持在starvation模式无法自动恢复；  
+> 另一方面raft代码运行会依赖定时器、超时、节点间消息的及时传递与处理，并且这些超时通常是秒、毫秒级别的，但metrics代码阻塞过久，直接导致时序相关的逻辑无法正常运行。
 
 [这样做RabbitMQ高可用，业务流量猛增10倍也不怂](https://mp.weixin.qq.com/s/vLTi_VRjeuW_ekDKzcE5ug)  
 
@@ -387,10 +387,10 @@ SQL命令行修改数据，养成begin + commit 事务的习惯
 [vivo 互联网业务就近路由技术实战](https://mp.weixin.qq.com/s/qw1z5lgctAXav7SZsHbzfA)  
 
 [高级架构师用10年历练出的一份缓存使用总结](https://mp.weixin.qq.com/s/4-pF0a_stKgMSrPt0DGQsQ)  
-就是个缓存的简单应用，适合小白  
+> 就是个缓存的简单应用，适合小白  
 
 [怎么用Redis分布式锁才能确保万无一失？](https://mp.weixin.qq.com/s/ryzlOQK-9UfYUcZx8hl97Q)  
-SET key val NX EX expireTime  
-目前互联网公司在生产环境用的比较广泛的开源框架 Redisson  
-Redis 的作者 antirez 提供了 RedLock 的算法来实现一个分布式锁
-https://redis.io/topics/distlock
+> SET key val NX EX expireTime  
+> 目前互联网公司在生产环境用的比较广泛的开源框架 Redisson  
+> Redis 的作者 antirez 提供了 RedLock 的算法来实现一个分布式锁
+> https://redis.io/topics/distlock
