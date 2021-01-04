@@ -346,7 +346,17 @@
 [Kubernetes Ingress 基于内容的路由](https://mp.weixin.qq.com/s/Bk0Ve5sXAsd1I9F85m8_SQ)  
 
 [Kubernetes 入门&进阶实战](https://mp.weixin.qq.com/s/mUF0AEncu3T2yDqKyt-0Ow)
-
+> 从监控告警到部署服务，中间需要人力介入！那么，有没有办法自动完成服务的部署、更新、卸载和扩容、缩容呢？  
+> K8S 的 Master Node 具备：请求入口管理（API Server），Worker Node 调度（Scheduler），监控和自动调节（Controller Manager），以及存储功能（etcd）；而 K8S 的 Worker Node 具备：状态和监控收集（Kubelet），网络和负载均衡（Kube-Proxy）、保障容器化运行环境（Container Runtime）、以及定制化功能（Add-Ons）
+> 所有 Master Node 和 Worker Node 组成了 K8S 集群，同一个集群可能存在多个 Master Node 和 Worker Node。
+> Pod 就是 K8S 中一个服务的闭包：Pod 可以被理解成一群可以共享网络、存储和计算资源的容器化服务的集合。
+> volume 是 K8S 的对象，对应一个实体的数据卷；而 volumeMounts 只是 container 的挂载点，对应 container 的其中一个参数
+> 一个 Pod 内可以有多个容器 container。
+> Deployment 的作用是管理和控制 Pod 和 ReplicaSet，管控它们运行在用户期望的状态中。哎，打个形象的比喻，Deployment 就是包工头，ReplicaSet 就是总包工头手下的小包工头。
+> Service 是 K8S 服务的核心，屏蔽了服务细节，统一对外暴露服务接口，真正做到了“微服务”
+> Service 主要负责 K8S 集群内部的网络拓扑。那么集群外部怎么访问集群内部呢？这个时候就需要 Ingress 了
+> namespace 是为了把一个 K8S 集群划分为若干个资源不可共享的虚拟集群而诞生的。
+> Kubectl 是一个命令行接口，用于对 Kubernetes 集群运行命令：kubectl 部署服务；kubectl 查看、更新/编辑、删除服务；kubectl 排查服务问题
 
 [高可用架构怎么选？常见多活建设这么一对比就懂了](https://mp.weixin.qq.com/s/nuT38bPo3Y2bQ1h5_sWiWQ)  
 
