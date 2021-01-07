@@ -16,9 +16,13 @@
 
 [为什么 Linux 默认页大小是 4KB](https://mp.weixin.qq.com/s/EQsdFirbnsi8iiyTYQjWTw)  
 
+[Linux 网络层收发包流程及 Netfilter 框架浅析](https://mp.weixin.qq.com/s/FbeSTXwMn4X83QdgvwW-pQ)
+
 [如何写出让 CPU 跑得更快的代码？](https://mp.weixin.qq.com/s/XKYSk-5TO888LP3LIzxd_Q)  
 
 [彻底搞懂 IO 底层原理](https://mp.weixin.qq.com/s/_Eh7eZLtcUjrp9QiCvLmrw)  
+
+[深入理解计算机系统：进程](https://mp.weixin.qq.com/s/z6K8C56FnNVKu6XAQefViQ)
 
 [Go netpoller 网络模型之源码全面解析](https://mp.weixin.qq.com/s/HNPeffn08QovQwtUH1qkbQ)  
 
@@ -395,6 +399,12 @@
 [Dubbo 3.0 前瞻系列：服务发现支持百万集群，带来可伸缩微服务架构](https://mp.weixin.qq.com/s/_Ih4AyL2c1JjyLwKCPmphg)  
 
 [vivo 互联网业务就近路由技术实战](https://mp.weixin.qq.com/s/qw1z5lgctAXav7SZsHbzfA)  
+
+[被数据库读写分离坑了，数据不一致怎么解](https://mp.weixin.qq.com/s/Hhs13s3NK6-e1uslSXVG2A)  
+> 搞了个中间件：做从库同步状态的标记，很鸡肋
+
+[vivo 全球商城：订单中心架构设计与实践](https://mp.weixin.qq.com/s/i6sI1C_Ye7-Ax9GtZNf9-g)  
+> 说的挺多，但是看这句话：考虑到不停机方案的改造成本较高，而夜间停机方案的业务损失并不大，最终选用的是停机迁移方案。  
 
 [高级架构师用10年历练出的一份缓存使用总结](https://mp.weixin.qq.com/s/4-pF0a_stKgMSrPt0DGQsQ)  
 > 就是个缓存的简单应用，适合小白  
