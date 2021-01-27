@@ -26,6 +26,8 @@
 
 [Go netpoller 网络模型之源码全面解析](https://mp.weixin.qq.com/s/HNPeffn08QovQwtUH1qkbQ)  
 
+[Linux 网络层收发包流程及 Netfilter 框架浅析](https://mp.weixin.qq.com/s/FbeSTXwMn4X83QdgvwW-pQ)  
+
 [Linux 内核使用 Lockdep 工具来检测和特别是预测锁的死锁场景](https://mp.weixin.qq.com/s/NA-yPnHlNEKKem9PswGAWQ)  
 
 [揭开内存管理的迷雾](https://mp.weixin.qq.com/s/4FF5uH0YVTAM9-llKTAWKA)  
@@ -82,6 +84,10 @@
 
 [Java 语言中锁的设计与应用](https://mp.weixin.qq.com/s/cGJxllpHskK4castfOJ_gw)  
 
+[上篇 | 说说无锁(Lock-Free)编程那些事](https://mp.weixin.qq.com/s/T_z2_gsYfs6A-XjVTVV_uQ)  
+
+[下篇 | 说说无锁(Lock-Free)编程那些事（下）](https://mp.weixin.qq.com/s/h75n7sHnrmoLJ4DVAW5AUQ)  
+
 [源码深度解析 Handler 机制及应用](https://mp.weixin.qq.com/s/71OV_K7YJas7pLtsPY-jeQ)  
 
 [vivo 调用链 Agent 原理及实践](https://mp.weixin.qq.com/s/vPgBLi-2svhU_t1wN-6ZBA)  
@@ -94,6 +100,10 @@
 
 [奇怪的知识： okhttp 是如何支持 Http2 的？](https://mp.weixin.qq.com/s/TeQhe4T4wRjdAEPz6Ne45g)  
 
+* Grpc协议
+> gRPC 协议，简单来说就是 http2 协议的基础之上，增加了特定的协议 header：“grpc-” 开头的 header 字段，采用特定的打解包工具（protobuf）对数据进行序列化，从而实现 RPC 调用。  
+> 在 gRPC 的 stream 调用中，可在 server 端回传的过程中发送多次 Data，调用结束后再发送 Header 终止 RPC 过程，并汇报状态信息。  
+
 [gRPC客户端详解](http://liumenghan.github.io/2019/10/07/grpc-in-depth/)  
 > Thrift的客户端是线程不安全的——这意味着在Spring中无法以单例形式注入到Bean中  
 > gRPC服务端的Response都是异步形式  
@@ -102,6 +112,11 @@
 [grpc原理](https://www.jianshu.com/p/9e57da13b737)  
 
 [深入了解 gRPC：协议](https://mp.weixin.qq.com/s/GEaTUTp_wuILYTVbZvJo7g)  
+
+[程序员如何用gRPC谈一场恋爱](https://mp.weixin.qq.com/s/Y2sHs_Sq4lB3hBhKGSvaNg)
+> A client-to-server streaming RPC :1.agent上报CPU，内存等数据到server;2.客户端心跳;3.客户端并发调用细小粒度的接口。  
+> A server-to-client streaming RPC :1.股票app。客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端;2.app的在线push。
+> A Bidirectional streaming RPC 1.聊天机器人;2.有状态的游戏服务器进行数据交换。
 
 [巧用 Protobuf 反射来优化代码，拒做 PB Boy](https://mp.weixin.qq.com/s/ALhSKrLwNdA_GkozJQXn5g)  
 > 获取 PB 中所有非空字段：bool has_field = reflection->HasField(message, field)  
@@ -163,9 +178,22 @@
 
 [彻底弄懂TCP协议：从三次握手说起](https://mp.weixin.qq.com/s/6LiZGMt2KRiIoMaLwx-lkQ)  
 
+[​TCP 拥塞控制详解](https://mp.weixin.qq.com/s/KTKVu3uCC5MFlU5oylZPFA)  
+
 [一个有关tcp的非常有意思的问题](https://mp.weixin.qq.com/s/7TbCIu3MtL4BNo06Ad8cDA)  
 > 客户端在第一次write之前，服务端的socket收到fin包，进入到CLOSE_WAIT状态  
 > 此时，其实并不能说明服务端已经完全关闭了连接，它还有可能是发送fin包，只是为了关闭其send端，但它还是可以读的，所以客户端理应也可以继续写。  
+
+[【TCP】CONNECTION RESET BY PEER 原因分析定位](https://www.freesion.com/article/1316615554/)
+> 客户端recev-Q阻塞，表明客户端处理不过来，操作系统接收缓冲区阻塞，程序没有及时消费掉；  
+> nginx服务端send-Q阻塞，不能及时发出去，表明下游程序收不过来，和上述客户端现象表现一致；  
+> 查看客户端处理代码逻辑，发现单线程处理，效率低下，改成异步线程池提交处理的方式，问题解决。  
+> linux操作系统的三个参数，跟此次现象有关：net.ipv4.tcp_keepalive_time;net.ipv4.tcp_keepalive_intvl;net.ipv4.tcp_keepalive_probes
+
+[JAVA.IO.IOEXCEPTION: CONNECTION RESET BY PEER问题解决](https://www.freesion.com/article/3680678097/)
+> 当并发请求超过服务器的承载量时，服务器会停掉一些请求。  
+> 客户端关闭了  
+> 防火墙/nginx影响了,1>高并发的处理;2>防DDOS攻击;3>爬虫扫描等等
 
 [一文读懂 HTTP/1HTTP/2HTTP/3](https://mp.weixin.qq.com/s/fy84edOix5tGgcvdFkJi2w)  
 
@@ -191,11 +219,39 @@
 
 [Redis module功能介绍](https://mp.weixin.qq.com/s/uN1Iyha96TCG7Ff2ZRW1Dw)  
 
-[败家玩意儿！Redis 竟然浪费了这么多内存！](https://mp.weixin.qq.com/s/efPjJjdDHW6QOhSfHOioRA)
+[Redis 6.2 RC发布新特性一览](https://mp.weixin.qq.com/s/dwUze7I2zoryNmTHmrG5PQ)  
+
+[败家玩意儿！Redis 竟然浪费了这么多内存！](https://mp.weixin.qq.com/s/efPjJjdDHW6QOhSfHOioRA)  
 
 [从1到3分布式Redis电商实战&缓存穿透&缓存雪崩&缓存失效终极解决](https://www.bilibili.com/video/BV17T4y1F79p?p=1&share_medium=android&share_plat=android&share_source=COPY&share_tag=s_i&timestamp=1607301887&unique_k=sVref8)  
 
 [替你踩过Redis缓存的坑，奉上使用规范和监控方法](https://mp.weixin.qq.com/s/R-slZDV2YNTA_M_sctyvZA)  
+
+[Redis为什么变慢了？Redis性能问题排查详述](https://mp.weixin.qq.com/s/gYQn9tdFK9tHJDoMWcU4cQ)  
+> 服务内部集成链路追踪  
+> 执行以下命令，就可以测试出这个实例 60 秒内的最大响应延迟：  
+> * redis-cli -h 127.0.0.1 -p 6379 --intrinsic-latency 60  
+> * redis-cli -h 127.0.0.1 -p 6379 --latency-history -i 1  
+> 使用复杂度过高的命令执行 O(N) 命令，保证 N 尽量的小（推荐 N <= 300）  
+> 操作bigkey，最好控制一下扫描的频率，指定 -i 参数即可:redis-cli -h 127.0.0.1 -p 6379 --bigkeys -i 0.01  
+> 集中过期:  
+> * 如果此时需要过期删除的是一个 bigkey，那么这个耗时会更久。而且，这个操作延迟的命令并不会记录在慢日志中。  
+> * lazyfree-lazy-expire yes  
+> 实例内存达到上限,内存上限 maxmemory，当 Redis 内存达到 maxmemory 后，每次写入新的数据之前，Redis 必须先从实例中踢出一部分数据，让整个实例的内存维持在 maxmemory 之下，然后才能把新数据写进来。  
+> fork耗时严重:  上一次 fork 耗时，单位微秒  latest_fork_usec:59477  
+> .除了数据持久化会生成 RDB 之外，当主从节点第一次建立数据同步时，主节点也创建子进程生成 RDB，然后发给从节点进行一次全量同步，所以，这个过程也会对 Redis 产生性能影响。  
+> 适当调大 repl-backlog-size 参数，避免主从全量同步  
+> 开启内存大页:Linux 内核从 2.6.38 开始，支持了内存大页机制，该机制允许应用程序以 2MB 大小为单位，向操作系统申请内存,只需要关闭内存大页机制就可以了:echo never > /sys/kernel/mm/transparent_hugepage/enabled。  
+> 开启AOF,但此时的后台子线程由于磁盘负载过高，导致 fsync 发生阻塞，迟迟不能返回，那主线程在执行 write 系统调用时，也会被阻塞住，直到后台线程 fsync 执行完成后，主线程执行 write 才能成功返回。
+> * AOF rewrite 期间，AOF 后台子线程不进行刷盘操作
+> * 相当于在这期间，临时把 appendfsync 设置为了 none
+> no-appendfsync-on-rewrite yes
+> 如果占用磁盘资源的是其他应用程序，那就比较简单了，你需要定位到是哪个应用程序在大量写磁盘，然后把这个应用程序迁移到其他机器上执行就好了
+> 绑定CPU:如果你把 Redis 进程只绑定了一个 CPU 逻辑核心上，那么当 Redis 在进行数据持久化时，fork 出的子进程会继承父进程的 CPU 使用偏好。
+> Redis 在 6.0 版本已经推出了这个功能，我们可以通过以下配置，对主线程、后台线程、后台 RDB 进程、AOF rewrite 进程，绑定固定的 CPU 逻辑核心：
+> 使用Swap,查看 Redis 进程是否使用到了 Swap：cat /proc/$pid/smaps | egrep '^(Swap|Size)'
+> 碎片整理:Redis 碎片整理的参数配置如下：
+> 网络带宽过载
 
 [运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)  
 
@@ -213,6 +269,10 @@
 [Redis小功能大用处-total_net_output_bytes](https://mp.weixin.qq.com/s/emr4_clKV4qW0gmtHiINiQ)  
 
 [Redis速度快的原因：几点图解总结](https://mp.weixin.qq.com/s/FtfAqXXDef6-bhuGyPDK7w)  
+
+[深入浅出百亿请求高可用Redis(codis)分布式集群揭秘](https://mp.weixin.qq.com/s/F68-e2umTQIq0aGfif58ow)  
+
+[干货 | 数万实例数百TB数据量，携程Redis治理演进之路](https://mp.weixin.qq.com/s/L7EQzthCoWuJw8TzY-KAMw)  
 
 [干货 | 携程Redis治理演进之路（二）](https://mp.weixin.qq.com/s/QTqcBZlAhp5cLRJGJVZRNw)  
 
@@ -246,9 +306,7 @@
 
 [API 分页设计与实现](https://mp.weixin.qq.com/s/TQ248e9171jOHSYxdgLBWA)
 > 在数据库中有一个游标（cursor）的概念，它是一个指向行的指针，然后可以告诉数据库："在这个游标之后返回 100 行"。  
-> 使用游标的另一个原因是避免由于并发编辑而导致元素重复或跳过的问题,而不用担心新的记录进来扰乱你的分页。  
-
-[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
+> 使用游标的另一个原因是避免由于并发编辑而导致元素重复或跳过的问题,而不用担心新的记录进来扰乱你的分页。   
 
 [一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)  
 
@@ -264,6 +322,8 @@
 > 禁止查询 indexName-*  
 
 [干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
+
+[Elasticsearch调优实践](https://mp.weixin.qq.com/s/0TMESj2Z-XK2PzwBQo0Mpg)  
 
 [分布式搜索引擎Elasticsearch的架构分析](https://mp.weixin.qq.com/s/N_y7BxbO9pCTrgJbDq4bOA)  
 
@@ -333,7 +393,7 @@
 
 [两小时搞定PB级HDFS数据迁移，挪走日均近5亿RPC](https://mp.weixin.qq.com/s/DZQO7TCdUOsh4ETza3epVg)  
 
-## serviceMesh K8S Docker
+## serviceMesh K8S Docker Envoy
 
 [Service Mesh在腾讯云中间件团队的实践与思考](https://mp.weixin.qq.com/s/uRgPfHgaiba1MuSxzkj4tQ)  
 
@@ -366,9 +426,20 @@
 
 [谷歌可靠性工程的“封神”之路：从大规模分布式系统高效故障响应说起](https://mp.weixin.qq.com/s/WRx9ZKumRh-JdjAZuxGwPw)  
 
+* Envoy  
+> 基于类库模式的痛点是做了大量的重复开发，如果在容器里面跑，不仅重，修改起来也麻烦，并且一旦把限流限速的逻辑修改了，那么每个服务都要修改。  
+
 [复杂环境下落地Service Mesh的挑战与实践](https://mp.weixin.qq.com/s/Z-Nv7XId7EbPpH8UDjWxCQ)  
+> gRPC 统一了底层通信层；protobuf 统一了序列化协议；以 envoy + istio 为代表的 service mesh 逐渐统一了服务的控制面与数据面
 
 [vivo 微服务 API 网关架构实践](https://mp.weixin.qq.com/s/5U1rgpcW21LDYzv8K9EX7g)  
+
+[Envoy 架构及其在网易轻舟的落地实践](https://mp.weixin.qq.com/s/lyfk8tluR8Bagpb-dMzd1g)
+> Listener（监听器）/Cluster（集群）/Filter（过滤器）/Route（路由）  
+> Listener Filter 处理连接、Network Filter 处理二进制数据、L7 Filter 处理解析后结构化数据  
+> 相比于数据面纯粹的代理，API 网关更强调流量的治理。详细的日志、丰富的监控、及时的报警、准确的链路分析，这些才能撑起一个 API 网关所必须的可观察性   
+> Envoy 提供了全局/本地限流、黑白名单、服务/路由熔断、动静态降级、流量染色等等流量治理  
+> 你的工作不是“使用服务网络”或“采用Envoy”，甚至“只使用CNCF技术”。你的工作是清楚地了解你要解决的问题，然后选择最能解决它的解决方案。无论你选择什么，你都将不得不接受它--所以确保你的决策是基于具体的  
 
 ## delete later
 
@@ -414,3 +485,13 @@
 > 目前互联网公司在生产环境用的比较广泛的开源框架 Redisson  
 > Redis 的作者 antirez 提供了 RedLock 的算法来实现一个分布式锁
 > https://redis.io/topics/distlock
+
+[唯一ID生成算法剖析](https://mp.weixin.qq.com/s/E3PGP6FDBFUcghYfpe6vsg)  
+
+[蓄水池抽样算法（Reservoir Sampling）](https://www.jianshu.com/p/7a9ea6ece2af)  
+
+[分布式之系统底层原理](https://mp.weixin.qq.com/s/KKrxuVCrjlXXWMPTXQ-fvA)  
+
+[API设计最佳实践](https://mp.weixin.qq.com/s/2FskeLpyve6PGGCrqpSKWQ)  
+
+[低代码在爱奇艺鹊桥数据同步平台的实践](https://mp.weixin.qq.com/s/pCX7wmL0BYPbe7FdXscnYw)  
