@@ -5,10 +5,26 @@
 ## LINUX
 
 [从无盘启动看 Linux 启动原理](https://mp.weixin.qq.com/s/6vFXphhkPpyYEDSgibl_vA)  
+> "只读内存"(ROM)----"基本输入输出系统"(BIOS)----"硬件自检"(POST)----"启动顺序"(Boot Sequence)  
+> 上电自检----UEFI 固件被加载----加载 UEFI 应用----启动内核及 initramfs  
+> /sbin/init----/etc/inittab----etc/rcN.d  
 
 [Linux 机器 CPU 毛刺问题排查](https://mp.weixin.qq.com/s/UFPi8PZ9GcAfaalCrWTmng)  
+> Linux Agent 每分钟会采集 4 次 15 秒内的 CPU 平均使用率。为了避免漏采集 CPU 峰值，网管 Agent 取这一分钟内四次采集的最大值上报。  
+> gcore {pid}的命令，可以保留堆栈信息，明确具体高负载的位置  
+> spp 的cost_stat_tool工具/tcpdump抓包确认  
 
 [Linux 入门必看：如何60秒内分析Linux性能](https://mp.weixin.qq.com/s/HvADkICPYflS2VTuSB16rg)  
+> uptime  系统启动时间  
+> dmesg | tail  系统的错误日志，eg：杀死 OOM 问题的进程，丢弃 TCP 请求的问题  
+> vmstat 1  查看CPU、内存、磁盘IO等待  
+> mpstat -P ALL 1  打印各个 CPU 的时间统计，eg：一个使用率明显较高的 CPU 就可以明显看出来这是一个单线程应用  
+> pidstat 1  pidstat 命令有点像 top 命令中的为每个 CPU 统计信息功能，但是它是以不断滚动更新的方式打印信息，而不是每次清屏打印  
+> iostat -xz 1  
+> free -m  
+> sar -n DEV 1  
+> sar -n TCP,ETCP  
+> top  
 
 [​Linux CPU 性能优化指南](https://mp.weixin.qq.com/s/7HGjAy_R_sdpfckFlFr0cw)  
 
@@ -228,30 +244,7 @@
 [替你踩过Redis缓存的坑，奉上使用规范和监控方法](https://mp.weixin.qq.com/s/R-slZDV2YNTA_M_sctyvZA)  
 
 [Redis为什么变慢了？Redis性能问题排查详述](https://mp.weixin.qq.com/s/gYQn9tdFK9tHJDoMWcU4cQ)  
-> 服务内部集成链路追踪  
-> 执行以下命令，就可以测试出这个实例 60 秒内的最大响应延迟：  
-> * redis-cli -h 127.0.0.1 -p 6379 --intrinsic-latency 60  
-> * redis-cli -h 127.0.0.1 -p 6379 --latency-history -i 1  
-> 使用复杂度过高的命令执行 O(N) 命令，保证 N 尽量的小（推荐 N <= 300）  
-> 操作bigkey，最好控制一下扫描的频率，指定 -i 参数即可:redis-cli -h 127.0.0.1 -p 6379 --bigkeys -i 0.01  
-> 集中过期:  
-> * 如果此时需要过期删除的是一个 bigkey，那么这个耗时会更久。而且，这个操作延迟的命令并不会记录在慢日志中。  
-> * lazyfree-lazy-expire yes  
-> 实例内存达到上限,内存上限 maxmemory，当 Redis 内存达到 maxmemory 后，每次写入新的数据之前，Redis 必须先从实例中踢出一部分数据，让整个实例的内存维持在 maxmemory 之下，然后才能把新数据写进来。  
-> fork耗时严重:  上一次 fork 耗时，单位微秒  latest_fork_usec:59477  
-> .除了数据持久化会生成 RDB 之外，当主从节点第一次建立数据同步时，主节点也创建子进程生成 RDB，然后发给从节点进行一次全量同步，所以，这个过程也会对 Redis 产生性能影响。  
-> 适当调大 repl-backlog-size 参数，避免主从全量同步  
-> 开启内存大页:Linux 内核从 2.6.38 开始，支持了内存大页机制，该机制允许应用程序以 2MB 大小为单位，向操作系统申请内存,只需要关闭内存大页机制就可以了:echo never > /sys/kernel/mm/transparent_hugepage/enabled。  
-> 开启AOF,但此时的后台子线程由于磁盘负载过高，导致 fsync 发生阻塞，迟迟不能返回，那主线程在执行 write 系统调用时，也会被阻塞住，直到后台线程 fsync 执行完成后，主线程执行 write 才能成功返回。
-> * AOF rewrite 期间，AOF 后台子线程不进行刷盘操作
-> * 相当于在这期间，临时把 appendfsync 设置为了 none
-> no-appendfsync-on-rewrite yes
-> 如果占用磁盘资源的是其他应用程序，那就比较简单了，你需要定位到是哪个应用程序在大量写磁盘，然后把这个应用程序迁移到其他机器上执行就好了
-> 绑定CPU:如果你把 Redis 进程只绑定了一个 CPU 逻辑核心上，那么当 Redis 在进行数据持久化时，fork 出的子进程会继承父进程的 CPU 使用偏好。
-> Redis 在 6.0 版本已经推出了这个功能，我们可以通过以下配置，对主线程、后台线程、后台 RDB 进程、AOF rewrite 进程，绑定固定的 CPU 逻辑核心：
-> 使用Swap,查看 Redis 进程是否使用到了 Swap：cat /proc/$pid/smaps | egrep '^(Swap|Size)'
-> 碎片整理:Redis 碎片整理的参数配置如下：
-> 网络带宽过载
+> 超级实用，建议看原文
 
 [运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)  
 
@@ -281,6 +274,10 @@
 [Spark-Redis入门到解决执行海量数据插入、查询作业时碰到的问题](https://mp.weixin.qq.com/s/K84I-mUf7U9Iej6h3un-bQ)  
 
 [超全的数据库建表/SQL/索引规范，适合贴在工位上！](https://mp.weixin.qq.com/s/-_m-OJ_PUXrw8Gey2ZA9aA)  
+
+[MySQL 5.6.35 索引优化导致的死锁案例解析](https://mp.weixin.qq.com/s/T5e-gb0MXxjBwbjGg6jIMg)
+> 原因是:index_merge是MySQL 5.1后引入的一项索引合并优化技术，它允许对同一个表同时使用多个索引进行查询，并对多个索引的查询结果进行合并(取交集(intersect)、并集(union)等)后返回。  
+> 死锁的本质原因还是由加锁顺序不同所导致，是由于Index Merge同时使用2个索引方向加锁所导致，解决方法也比较简单，就是消除因index merge带来的多个索引同时执行的情况。  
 
 [让MySQL飞起来！别小看这21种写SQL的好习惯](https://mp.weixin.qq.com/s/snV9i2qUR1yUje80YzxwOg)
 > 操作delete或者update语句，加个limit  
@@ -459,6 +456,9 @@
 
 [SpringBoot 配置类解析](https://mp.weixin.qq.com/s/NvPO5-FWLiOlrsOf4wLaJA)  
 
+[SpringBoot 2.0 中 HikariCP 数据库连接池原理解析](https://mp.weixin.qq.com/s/4ty3MrsymRsdz0BSB_lfyw)
+> FastList 适用于逆序删除场景；而 ConcurrentBag 本质上是通过 ThreadLocal 将连接池中的连接按照线程做一次预分配，避免直接竞争共享资源，减少并发CAS带来的CPU CACHE的频繁失效，从而提高性能，非常适合池化资源的分配  
+
 [分布式定时任务调度框架实践](https://mp.weixin.qq.com/s/l4vuYpNRjKxQRkRTDhyg2Q)  
 
 [一文了解 Consistent Hash](https://mp.weixin.qq.com/s/LGLqEOlGExKob8xEXXWckQ)  
@@ -495,3 +495,6 @@
 [API设计最佳实践](https://mp.weixin.qq.com/s/2FskeLpyve6PGGCrqpSKWQ)  
 
 [低代码在爱奇艺鹊桥数据同步平台的实践](https://mp.weixin.qq.com/s/pCX7wmL0BYPbe7FdXscnYw)  
+
+[高性能缓存 Caffeine 原理及实战](https://mp.weixin.qq.com/s/ZXLY3WZc7pywq2jL-i-2dQ)  
+> W-TinyLFU 算法  
