@@ -20,10 +20,10 @@
 > vmstat 1  查看CPU、内存、磁盘IO等待  
 > mpstat -P ALL 1  打印各个 CPU 的时间统计，eg：一个使用率明显较高的 CPU 就可以明显看出来这是一个单线程应用  
 > pidstat 1  pidstat 命令有点像 top 命令中的为每个 CPU 统计信息功能，但是它是以不断滚动更新的方式打印信息，而不是每次清屏打印  
-> iostat -xz 1  
-> free -m  
-> sar -n DEV 1  
-> sar -n TCP,ETCP  
+> iostat -xz 1  这个工具对于理解块设备（比如磁盘）很有用，展示了请求负载和性能数据  
+> free -m  显示了系统内存不足  
+> sar -n DEV 1  使用这个工具是可以检测网络接口的吞吐  
+> sar -n TCP,ETCP  每秒本地发起的 TCP 连接数；每秒远程发起的连接数；每秒 TCP 重传数（重传是网络或者服务器有问题的一个信号）
 > top  
 
 [​Linux CPU 性能优化指南](https://mp.weixin.qq.com/s/7HGjAy_R_sdpfckFlFr0cw)  
@@ -40,25 +40,38 @@
 
 [深入理解计算机系统：进程](https://mp.weixin.qq.com/s/z6K8C56FnNVKu6XAQefViQ)
 
-[Go netpoller 网络模型之源码全面解析](https://mp.weixin.qq.com/s/HNPeffn08QovQwtUH1qkbQ)  
-
 [Linux 网络层收发包流程及 Netfilter 框架浅析](https://mp.weixin.qq.com/s/FbeSTXwMn4X83QdgvwW-pQ)  
 
 [Linux 内核使用 Lockdep 工具来检测和特别是预测锁的死锁场景](https://mp.weixin.qq.com/s/NA-yPnHlNEKKem9PswGAWQ)  
 
 [揭开内存管理的迷雾](https://mp.weixin.qq.com/s/4FF5uH0YVTAM9-llKTAWKA)  
 
-## JVM GC JAVA
-
-[Twitter短链服务大bug: 预连到错误域名](https://mp.weixin.qq.com/s/W5G_LPr6cBqHBO8qnm0B3g)  
-
-[内存泄漏事故：一顿debug猛如虎，定睛一看原地杵](https://mp.weixin.qq.com/s/l6prJDzbNDg1QkKc9fWJyg)  
-
-[一文掌握开发利器：正则表达式](https://mp.weixin.qq.com/s/wkCHL_QzAJwWEg9JZaZnCQ)  
+## JVM GC JAVA 
 
 [为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)  
+> 高度定制的 Linux 内核，带有操作系统旁路，这样数据就可以直接从网卡 "跳转" 到应用程序、基于 IPC 进程间通信，甚至使用 FPGA  
+> Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。  
 
-[Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A)  
+[Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A) 
+>  内存管理：  
+>  0.堆内：老年代PS Old Generation使用率占99.99%，再结合gc log，如果老年代回收不掉，基本确认为堆上内存泄露；堆外：Java使用堆外内存导致的内存泄露、Java程序使用C++导致的内存泄露  
+>  1.堆上内存泄漏：首先用jdk/bin/jmap -dump:live,format=b,file=heap.hprof {pid}，导出堆里所有活着的对象，然后用工具分析heap.hprof  
+>  2.对象被静态对象引用：右键RaftServerMetrics->Merge shortest path to GC Roots ->with all references查找所有引用RaftServerMetrics的地方  
+>  3.RPC连接使用完后未关闭： 
+>  4.堆外内存泄露：首先开启-XX:NativeMemoryTracking=detail显示的内存不包含C++分配的内存（为了快速验证是否DirectByteBuffer导致内存泄露，可使用参数-XX:MaxDirectMemorySize限制DirectByteBuffer分配的堆外内存大小，如果堆外内存仍然大于MaxDirectMemorySize，可基本排除DirectByteBuffer导致的内存泄露）  
+>  5.Java调用C++组件：  
+> 性能优化：  
+> 1.arthas：开始perf: profiler start，采样一段时间后，停止perf: profiler stop。热点函数避免使用lambda表达式如stream.collect等  
+> 2.jaeger：  
+> 3.tcpdump：tcpdump -i eth0 -s 0 -A 'tcp dst port 9878 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420' -w read.cap，该命令在读200M文件时会将所有GET请求导出到read.cap文件，然后用wireshark打开read.cap  
+> 4.jstack：top -Hp pid命令打出进程pid的所有线程及每个线程的CPU消耗；然后计算出使用CPU最高的线程号的十六进制表示0x417，再用jstack -l pid > jstack.txt命令打出所有线程状态  
+> 宕机：  
+> 1.被其他进程杀：排查工具有两个：linux自带的auditd和systemtap  
+> 2.调用System的exit：可以用arthas排查：nohup ./as.sh -f system_exit.as 69001 -b > system_exit.out 2>&1 &，即可监控进程69001调用  
+> 3.Java调用的C++发生Crash：  
+> 4.Java内Crash：-XX:ErrorFile -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath  
+> 死锁：  
+> 1.jstack打出的死锁信息  
 
 [Java中9种常见的CMS GC问题分析与解决](https://mp.weixin.qq.com/s/BoMAIurKtQ8Wy1Vf_KkyGw)  
 
@@ -498,3 +511,8 @@
 
 [高性能缓存 Caffeine 原理及实战](https://mp.weixin.qq.com/s/ZXLY3WZc7pywq2jL-i-2dQ)  
 > W-TinyLFU 算法  
+
+[一文掌握开发利器：正则表达式](https://mp.weixin.qq.com/s/wkCHL_QzAJwWEg9JZaZnCQ)  
+> 正则表达式帮助文档  
+> 正则回溯：NFA 速度较 DFA 更慢，并且实现复杂，但是它又有着比 DFA 强大的多的功能，比如支持反向引用等。像 javaScript、java、php、python、c#等语言的正则引擎都是 NFA 型，NFA 正则引擎的实现过程中使用了回溯  
+> RegexBuddy:正则分析工具  
