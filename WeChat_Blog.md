@@ -224,6 +224,12 @@
 > 客户端关闭了  
 > 防火墙/nginx影响了,1>高并发的处理;2>防DDOS攻击;3>爬虫扫描等等
 
+[https连接的前几毫秒发生了什么](https://www.rrfed.com/2017/02/03/https/)  
+https解决什么问题:1.域名污染/2.APR欺骗  
+https是应对中间人攻击的唯一方式  
+RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)  
+怎样绕过https：使用ssltrip，这个工具它的实现原理是先使用arp欺骗和用户建立连接，然后强制将用户访问的https替换成http。即中间人和用户之间是http，而和服务器还是用的https  
+
 [一文读懂 HTTP/1HTTP/2HTTP/3](https://mp.weixin.qq.com/s/fy84edOix5tGgcvdFkJi2w)  
 
 [白话http2的多路复用](https://mp.weixin.qq.com/s/-mg4AD4-ea_W3aUFchSQIQ)  
@@ -500,6 +506,8 @@
 > https://redis.io/topics/distlock
 
 [唯一ID生成算法剖析](https://mp.weixin.qq.com/s/E3PGP6FDBFUcghYfpe6vsg)  
+> 批量生成一批ID  
+> 雪花算法:在分布式环境下，如果发生时钟回拨，很可能会引起id冲突的问题(有若干解决方案)  
 
 [蓄水池抽样算法（Reservoir Sampling）](https://www.jianshu.com/p/7a9ea6ece2af)  
 
