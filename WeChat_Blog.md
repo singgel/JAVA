@@ -236,15 +236,24 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [移动端APM网络监控与优化方案](https://mp.weixin.qq.com/s/MnlxrUwB57lqE1aExr0iGA)  
 > 网络状况较好时，HTTP2.0多路复用，带来了性能上的优势，但在网络不稳定时，HTTP1.1错误率低于HTTP2.0。
-> 1. 多域名连接共享，实现0RTT多路复用。
-> 2. 避免了DNS解析，防止DNS劫持。
-> 3. protobuf编码私有协议，节省流量。
+> 1. 多域名连接共享，实现0RTT多路复用
+> 2. 避免了DNS解析，防止DNS劫持
+> 3. protobuf编码私有协议，节省流量
 
 [深入理解web协议(二)  ：DNS、WebSocket](https://mp.weixin.qq.com/s/AkbAN4UZLDf841g1ZLFPBQ)  
 
 [深入理解 web 协议(一)  - http 包体传输](https://mp.weixin.qq.com/s/WlT8070LlrnSODFRDwZsUQ)  
 
 ## REDIS ES MYSQL MongoDB
+
+[Redis 进阶笔记](https://mp.weixin.qq.com/s/o66KCbJUj4RsgXFjXzLzoQ)  
+> Redis 里的 List 设计非常牛，当数据量比较小的时候，数据结构是压缩链表，而当数据量比较多的时候就成为了快速链表。  
+> hash 的扩容 rehash 过程就是维护了两个 hash 结构，如果需要扩容的时候，就把新的数据写入新字典中，然后后端起一个线程来逐步迁移，总体上来说就是采用了空间换时间的思想。  
+> 对于上游的客户端请求，采用了多路复用的原理。Redis 会给每一个客户端套接字都关联一个指令队列，客户端的指令队列通过队列排队来进行顺序处理，同时 Reids 给每一个客户端的套件字关联一个响应队列，Redis 服务器通过响应队列来将指令的接口返回给客户端  
+> 在 Redis 4.0 之后，支持了混合持久化 RDB + 增量的 AOF 文件
+
+[这篇Redis文章，Antirez看了都说好](https://mp.weixin.qq.com/s/DCngASQ7gsKpFA2JHCH7Sg)  
+> mem_fragmentation_ratio一般大于1，且该值越大，内存碎片比例越大。如果mem_fragmentation_ratio<1，说明Redis使用了虚拟内存，由于虚拟内存的媒介是磁盘，比内存速度要慢很多，当这种情况出现时，应该及时排查，如果内存不足应该及时处理  
 
 [Redis小功能大用处(1)  -stat_expired_time_cap_reached_count](https://mp.weixin.qq.com/s/3UxXnSus0HTlA0ndpLZPgg)  
 
@@ -322,7 +331,7 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [API 分页设计与实现](https://mp.weixin.qq.com/s/TQ248e9171jOHSYxdgLBWA)
 > 在数据库中有一个游标（cursor）的概念，它是一个指向行的指针，然后可以告诉数据库："在这个游标之后返回 100 行"。  
-> 使用游标的另一个原因是避免由于并发编辑而导致元素重复或跳过的问题,而不用担心新的记录进来扰乱你的分页。   
+> 使用游标的另一个原因是避免由于并发编辑而导致元素重复或跳过的问题,而不用担心新的记录进来扰乱你的分页。  
 
 [一次看完28个关于ES的性能调优技巧](https://mp.weixin.qq.com/s/nnOazH26pq-Kn8zlGKgvTA)  
 
@@ -340,6 +349,7 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 [干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
 
 [Elasticsearch调优实践](https://mp.weixin.qq.com/s/0TMESj2Z-XK2PzwBQo0Mpg)  
+> cluster.routing.allocation.enable: "none"，实际上影响的是已有索引(local存在)的replica，以及新创建索引的primary和replica。  
 
 [分布式搜索引擎Elasticsearch的架构分析](https://mp.weixin.qq.com/s/N_y7BxbO9pCTrgJbDq4bOA)  
 
@@ -362,8 +372,7 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [简单理解 Kafka 的消息可靠性策略](https://mp.weixin.qq.com/s/T6gCc8OBgyV-yeAg_MUzPQ)  
 > ISR : leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica  
-> HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)
-在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)  
+> HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)  
 > LEO: LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset  
 > leader HW: 该 Partititon 所有副本的 LEO 最小值  
 > follower HW: min(follower 自身 LEO 和 leader HW)  
@@ -372,6 +381,15 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 > Leader 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO  
 > 在kafka配置为AP系统的情况下发生截断发生的概率会大大提升  
 > Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中  
+
+[从演进式角度看消息队列](https://mp.weixin.qq.com/s/2NoRkIKG0IFcoI-nZienAQ)  
+> redis实现的话：热key的问题/数据会被删除；topic在kafka中更多是一个逻辑上的概念，实际存储单元都是partition；kafka用游标（cursor）  
+> kafka在实际存储partition时又进行了一个拆分。topicA-partition-0的数据并不是写到一个文件里，而是写到多个segment文件里,当segment中所有消息都过期时，可以很容易地直接删除整个文件。  
+> 为了防止kafka的index过大，权衡之下kafka选择了使用”稀疏索引“。  
+
+[总结 Kafka 背后的优秀设计](https://mp.weixin.qq.com/s/dfOP2MeBOqFqg_BdcJCYug)  
+> 利用了 Page cache 来存储，这样躲开了数据在 JVM 因为 GC 而发生的 STW  
+> 为了保证性能，Kafka 不会采用强一致性的方式来同步主从的数据。而是维护了一个：in-sync Replica 的列表，Leader 不需要等待所有 Follower 都完成同步  
 
 [Linux Page Cache调优在Kafka中的应用](https://mp.weixin.qq.com/s/MaeXn-kmgLUah78brglFkg)  
 
@@ -409,7 +427,7 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [两小时搞定PB级HDFS数据迁移，挪走日均近5亿RPC](https://mp.weixin.qq.com/s/DZQO7TCdUOsh4ETza3epVg)  
 
-## serviceMesh K8S Docker Envoy
+## serviceMesh K8S Docker Envoy Nginx
 
 [Service Mesh在腾讯云中间件团队的实践与思考](https://mp.weixin.qq.com/s/uRgPfHgaiba1MuSxzkj4tQ)  
 
@@ -442,7 +460,7 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [谷歌可靠性工程的“封神”之路：从大规模分布式系统高效故障响应说起](https://mp.weixin.qq.com/s/WRx9ZKumRh-JdjAZuxGwPw)  
 
-* Envoy  
+### Envoy  
 > 基于类库模式的痛点是做了大量的重复开发，如果在容器里面跑，不仅重，修改起来也麻烦，并且一旦把限流限速的逻辑修改了，那么每个服务都要修改。  
 
 [复杂环境下落地Service Mesh的挑战与实践](https://mp.weixin.qq.com/s/Z-Nv7XId7EbPpH8UDjWxCQ)  
@@ -453,9 +471,23 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 [Envoy 架构及其在网易轻舟的落地实践](https://mp.weixin.qq.com/s/lyfk8tluR8Bagpb-dMzd1g)
 > Listener（监听器）/Cluster（集群）/Filter（过滤器）/Route（路由）  
 > Listener Filter 处理连接、Network Filter 处理二进制数据、L7 Filter 处理解析后结构化数据  
-> 相比于数据面纯粹的代理，API 网关更强调流量的治理。详细的日志、丰富的监控、及时的报警、准确的链路分析，这些才能撑起一个 API 网关所必须的可观察性   
+> 相比于数据面纯粹的代理，API 网关更强调流量的治理。详细的日志、丰富的监控、及时的报警、准确的链路分析，这些才能撑起一个 API 网关所必须的可观察性  
 > Envoy 提供了全局/本地限流、黑白名单、服务/路由熔断、动静态降级、流量染色等等流量治理  
 > 你的工作不是“使用服务网络”或“采用Envoy”，甚至“只使用CNCF技术”。你的工作是清楚地了解你要解决的问题，然后选择最能解决它的解决方案。无论你选择什么，你都将不得不接受它--所以确保你的决策是基于具体的  
+
+### Nginx  
+
+[一文看懂Nginx架构](https://mp.weixin.qq.com/s/o_OlJJdUz-t7znqXvIXwqg)  
+> master进程主要用来管理worker进程，具体包括如下4个主要功能：  
+> 1）接受来自外界的信号。其中master循环中的各项标志位就对应着各种信号，如：ngx_quit代表QUIT信号，表示优雅的关闭整个服务。  
+> 2）向各个worker进程发送信。比如ngx_noaccept代表WINCH信号，表示所有子进程不再接受处理新的连接，由master向所有的子进程发送QUIT信号量。  
+> 3）监控worker进程的运行状态。比如ngx_reap代表CHILD信号，表示有子进程意外结束，这时需要监控所有子进程的运行状态，主要由ngx_reap_children完成。  
+> 4）当woker进程退出后（异常情况下），会自动重新启动新的woker进程。主要也是在ngx_reap_children。  
+> Nginx热更配置，具体流程：master使用新配置启动新的worker，旧的worker不再接受新的请求。  
+> Nginx热更配置，具体流程：新旧master和worker共存。向老master发送WINCH信号，关闭旧worker进程，观察新worker进程工作情况。若升级成功，则向老master进程发送QUIT信号，关闭老master进程
+> epoll利用红黑树高效的增删查效率来管理连接，利用一个双向链表来维护活跃连接  
+> 多个worker来出来accept事件冲突：设置ngx_accept_mutex锁，只有获得锁的进程，才可以处理连接事件  
+> 为什么不采用多线程模型管理连接/处理逻辑业务？ 无状态服务，无需共享进程内存;一个进程异常崩溃，其他进程的服务不会中断，提升了架构的可靠性;作为接入层，基本上都是数据转发业务，网络IO任务的等待耗时部分，已经被处理为非阻塞/全异步/事件驱动模式，在没有更多CPU的情况下，再利用多线程处理，意义不大  
 
 ## delete later
 
@@ -481,6 +513,14 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 [分布式定时任务调度框架实践](https://mp.weixin.qq.com/s/l4vuYpNRjKxQRkRTDhyg2Q)  
 
 [一文了解 Consistent Hash](https://mp.weixin.qq.com/s/LGLqEOlGExKob8xEXXWckQ)  
+
+[哪种一致性哈希算法才是解决分布式缓存问题的王者？](https://mp.weixin.qq.com/s/mrIvSsFhyc7Bw7roQw4hDw)  
+> 看不懂  
+
+[分布式一致性算法 Raft](https://mp.weixin.qq.com/s/obnZm2Lhf_rKla2AxbrBlg)  
+> 首先选出 leader，leader 节点负责接收外部的数据更新 / 删除请求；
+> 然后日志复制到其他 follower 节点，同时通过安全性的准则来保证整个日志复制的一致性；
+> 如果遇到 leader 故障，followers 会重新发起选举出新的 leader；
 
 [分布式高并发服务三种常用限流方案简介](https://mp.weixin.qq.com/s/zIhQuK1jmHcn5eIqhJfNkw)  
 
@@ -524,3 +564,12 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 > 正则表达式帮助文档  
 > 正则回溯：NFA 速度较 DFA 更慢，并且实现复杂，但是它又有着比 DFA 强大的多的功能，比如支持反向引用等。像 javaScript、java、php、python、c#等语言的正则引擎都是 NFA 型，NFA 正则引擎的实现过程中使用了回溯  
 > RegexBuddy:正则分析工具  
+
+https://mp.weixin.qq.com/s/sRFmW57KUY3yyyRkyw0L4A
+https://mp.weixin.qq.com/s/h3CBZt2KEA-ScXFSKHaRBg
+https://mp.weixin.qq.com/s/xO2dkyZqKnUcaEXn_B39rw
+https://mp.weixin.qq.com/s/gd59U50tlJPa4B4avXRG1Q
+https://mp.weixin.qq.com/s/vzvmOXGcsX7rwY4J_--onw
+https://mp.weixin.qq.com/s/uuHeK9wJvo5hCxhQTpEVvQ
+https://mp.weixin.qq.com/s/4_TIWXgQDdCaRs3SqWCPlg
+https://mp.weixin.qq.com/s/8i8WDxqCZnv1s8W8V1YmXg
