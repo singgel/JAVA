@@ -140,6 +140,16 @@
 
 [grpc原理](https://www.jianshu.com/p/9e57da13b737)  
 
+[gRPC 基础概念详解](https://mp.weixin.qq.com/s/I2QHEBO26nGqhGwIw281Pg)  
+> 无论是 Client 还是 Server，在以异步方式进行处理时，都要预先分配好一定的内存 / 对象，以存储异步的请求或返回。  
+> 其实，回调方式的异步调用属于实验性质的，不建议直接在生产环境使用，这里也只做简单的介绍：  
+> Notice: This API is EXPERIMENTAL and may be changed or removed at any time.  
+> Client 发送流，是通过 Writer->WritesDone() 函数结束流  
+> Server 发送流，是通过结束 RPC 函数并返回状态码的方式来结束流  
+> 流接受者，都是通过 Reader->Read() 返回的 bool 型状态，来判断流是否结束  
+> Server 并没有像 Client 一样调用 WriteDone()，而是在消息之后，将 status code、可选的 status message、可选的 trailing metadata 追加进行发送，这就意味着流结束了  
+> End-Of-Stream 并没有单独的数据去描述，而是通过 HTTP2 的数据帧上带一个 END_STREAM 的 flag 来标识的  
+
 [深入了解 gRPC：协议](https://mp.weixin.qq.com/s/GEaTUTp_wuILYTVbZvJo7g)  
 
 [程序员如何用gRPC谈一场恋爱](https://mp.weixin.qq.com/s/Y2sHs_Sq4lB3hBhKGSvaNg)
@@ -521,6 +531,8 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 > 首先选出 leader，leader 节点负责接收外部的数据更新 / 删除请求；
 > 然后日志复制到其他 follower 节点，同时通过安全性的准则来保证整个日志复制的一致性；
 > 如果遇到 leader 故障，followers 会重新发起选举出新的 leader；
+> 为了解决数据不一致性，Raft 算法规定 follower 强制复制 leader 节日的日志，即 follower 不一致日志都会被 leader 的日志覆盖，最终 follower 和 leader 保持一致
+> 只有当前任期且复制超过半数的日志才可以提交  
 
 [分布式高并发服务三种常用限流方案简介](https://mp.weixin.qq.com/s/zIhQuK1jmHcn5eIqhJfNkw)  
 
