@@ -57,34 +57,32 @@
 
 [Linux 内核使用 Lockdep 工具来检测和特别是预测锁的死锁场景](https://mp.weixin.qq.com/s/NA-yPnHlNEKKem9PswGAWQ)  
 
-
-## JVM GC JAVA 
+## JVM GC JAVA
 
 [为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)  
 > 高度定制的 Linux 内核，带有操作系统旁路，这样数据就可以直接从网卡 "跳转" 到应用程序、基于 IPC 进程间通信，甚至使用 FPGA  
 > Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。  
 
 [Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A) 
->  内存管理：  
->  0.堆内：老年代PS Old Generation使用率占99.99%，再结合gc log，如果老年代回收不掉，基本确认为堆上内存泄露；堆外：Java使用堆外内存导致的内存泄露、Java程序使用C++导致的内存泄露  
->  1.堆上内存泄漏：首先用jdk/bin/jmap -dump:live,format=b,file=heap.hprof {pid}，导出堆里所有活着的对象，然后用工具分析heap.hprof  
->  2.对象被静态对象引用：右键RaftServerMetrics->Merge shortest path to GC Roots ->with all references查找所有引用RaftServerMetrics的地方  
->  3.RPC连接使用完后未关闭：  
->  4.堆外内存泄露：首先开启-XX:NativeMemoryTracking=detail显示的内存不包含C++分配的内存（为了快速验证是否DirectByteBuffer导致内存泄露，可使用参数-XX:MaxDirectMemorySize限制DirectByteBuffer分配的堆外内存大小，如果堆外内存仍然大于MaxDirectMemorySize，可基本排除DirectByteBuffer导致的内存泄露）  
->  5.Java调用C++组件：  
-
+> 内存管理：  
+0.堆内：老年代PS Old Generation使用率占99.99%，再结合gc log，如果老年代回收不掉，基本确认为堆上内存泄露；堆外：Java使用堆外内存导致的内存泄露、Java程序使用C++导致的内存泄露  
+1.堆上内存泄漏：首先用jdk/bin/jmap -dump:live,format=b,file=heap.hprof {pid}，导出堆里所有活着的对象，然后用工具分析heap.hprof  
+2.对象被静态对象引用：右键RaftServerMetrics->Merge shortest path to GC Roots ->with all references查找所有引用RaftServerMetrics的地方  
+3.RPC连接使用完后未关闭：  
+4.堆外内存泄露：首先开启-XX:NativeMemoryTracking=detail显示的内存不包含C++分配的内存（为了快速验证是否DirectByteBuffer导致内存泄露，可使用参数-XX:MaxDirectMemorySize限制ectByteBuffer分配的堆外内存大小，如果堆外内存仍然大于MaxDirectMemorySize，可基本排除DirectByteBuffer导致的内存泄露）  
+5.Java调用C++组件：  
 > 性能优化：  
-> 1.arthas：开始perf: profiler start，采样一段时间后，停止perf: profiler stop。热点函数避免使用lambda表达式如stream.collect等  
-> 2.jaeger：  
-> 3.tcpdump：tcpdump -i eth0 -s 0 -A 'tcp dst port 9878 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420' -w read.cap，该命令在读200M文件时会将所有GET请求导出到read.cap文件，然后用wireshark打开read.cap  
-> 4.jstack：top -Hp pid命令打出进程pid的所有线程及每个线程的CPU消耗；然后计算出使用CPU最高的线程号的十六进制表示0x417，再用jstack -l pid > jstack.txt命令打出所有线程状态  
+1.arthas：开始perf: profiler start，采样一段时间后，停止perf: profiler stop。热点函数避免使用lambda表达式如stream.collect等  
+2.jaeger：  
+3.tcpdump：tcpdump -i eth0 -s 0 -A 'tcp dst port 9878 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420' -w read.cap，该命令在读200M文件时会将所有GET请求导出到read.cap件，然后用wireshark打开read.cap  
+4.jstack：top -Hp pid命令打出进程pid的所有线程及每个线程的CPU消耗；然后计算出使用CPU最高的线程号的十六进制表示0x417，再用jstack -l pid > jstack.txt命令打出所有线程状态  
 > 宕机：  
-> 1.被其他进程杀：排查工具有两个：linux自带的auditd和systemtap  
-> 2.调用System的exit：可以用arthas排查：nohup ./as.sh -f system_exit.as 69001 -b > system_exit.out 2>&1 &，即可监控进程69001调用  
-> 3.Java调用的C++发生Crash：  
-> 4.Java内Crash：-XX:ErrorFile -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath  
+1.被其他进程杀：排查工具有两个：linux自带的auditd和systemtap  
+2.调用System的exit：可以用arthas排查：nohup ./as.sh -f system_exit.as 69001 -b > system_exit.out 2>&1 &，即可监控进程69001调用  
+3.Java调用的C++发生Crash：  
+4.Java内Crash：-XX:ErrorFile -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath  
 > 死锁：  
-> 1.jstack打出的死锁信息  
+1.jstack打出的死锁信息  
 
 [Java中9种常见的CMS GC问题分析与解决](https://mp.weixin.qq.com/s/BoMAIurKtQ8Wy1Vf_KkyGw)  
 
