@@ -27,24 +27,36 @@
 > top  
 
 [​Linux CPU 性能优化指南](https://mp.weixin.qq.com/s/7HGjAy_R_sdpfckFlFr0cw)  
+> 工具帖  
 
 [Linux I/O 原理和 Zero-copy 技术全面揭秘](https://mp.weixin.qq.com/s/dZNjq05q9jMFYhJrjae_LA)  
+> 内核从本质上看是一种软件 —— 控制计算机的硬件资源，并提供上层应用程序 (进程) 运行的环境  
+> 用户态即上层应用程序 (进程) 的运行空间，应用程序 (进程) 的执行必须依托于内核提供的资源，这其中包括但不限于 CPU 资源、存储资源、I/O 资源等等  
+> 用户进程如何切换到内核态去使用那些内核资源呢？答案是：1) 系统调用（trap），2) 异常（exception）和 3) 中断（interrupt）  
+> 利用 DMA 而非 CPU 来完成硬件接口和内核缓冲区之间的数据拷贝，从而解放 CPU，使之能去执行其他的任务，提升系统性能  
+> 后面的就看不懂了  
 
-[为什么 Linux 默认页大小是 4KB](https://mp.weixin.qq.com/s/EQsdFirbnsi8iiyTYQjWTw)  
-
-[Linux 网络层收发包流程及 Netfilter 框架浅析](https://mp.weixin.qq.com/s/FbeSTXwMn4X83QdgvwW-pQ)
+[Linux 网络层收发包流程及 Netfilter 框架浅析](https://mp.weixin.qq.com/s/FbeSTXwMn4X83QdgvwW-pQ)  
+> 传输层负责创建 sk_buff，并将用户数据（应用层数据）填充到缓冲区，做合法性检查后，添加传输层头部，并通过网络层注册的接口将数据包交给网络层处理  
+> 网络层收到传输层数据包后，会查询路由表，决定数据包去向，如果是需要发出的数据包，会填充网络层头部，并交到内核虚拟网络接口设备的发送队列中  
+> Linux 内核中，Netfiler 在网络层设置了多个 Hook 点  
 
 [如何写出让 CPU 跑得更快的代码？](https://mp.weixin.qq.com/s/XKYSk-5TO888LP3LIzxd_Q)  
+> 进程可能在不同 CPU 核心来回切换执行，这对 CPU Cache 不是有利的，虽然 L3 Cache 是多核心之间共享的，但是 L1 和 L2 Cache 都是每个核心独有的，如果一个进程在不同核心来回切换，各个核心的缓存命中率就会受到影响  
+> 在 Linux 上提供了 sched_setaffinity 方法，来实现将线程绑定到某个 CPU 核心这一功能  
 
 [彻底搞懂 IO 底层原理](https://mp.weixin.qq.com/s/_Eh7eZLtcUjrp9QiCvLmrw)  
+> BIO 一个线程大约占用1M的空间;如果线程数量庞大，会造成线程做上下文切换的时间甚至大于线程执行的时间，CPU负载变高  
+> NIO 用户进程需要不断去主动询问内核数据准备好了没有;用户进程不断切换到内核态
+> IO多路复用  
+> select():复杂度O(n)fd_set不可重用，fd_set有大小的限制，目前被硬编码成了1024；每次操作完都必须重置,数据取出后也需要轮询哪个fd上发生了变动
+> poll():通过event变量注册感兴趣的可读可写事件（POLLIN、POLLOUT），最后把 pollfd 交给内核。当有读写事件触发的时候，我们可以通过轮询 pollfd，判断revent确定该fd是否发生了可读可写事件  
+> epoll():O(1)复杂度，返回的"nfds"是一个确定的可读写的数量，相比于之前循环n次来确认，复杂度降低了不少  
 
 [深入理解计算机系统：进程](https://mp.weixin.qq.com/s/z6K8C56FnNVKu6XAQefViQ)
 
-[Linux 网络层收发包流程及 Netfilter 框架浅析](https://mp.weixin.qq.com/s/FbeSTXwMn4X83QdgvwW-pQ)  
-
 [Linux 内核使用 Lockdep 工具来检测和特别是预测锁的死锁场景](https://mp.weixin.qq.com/s/NA-yPnHlNEKKem9PswGAWQ)  
 
-[揭开内存管理的迷雾](https://mp.weixin.qq.com/s/4FF5uH0YVTAM9-llKTAWKA)  
 
 ## JVM GC JAVA 
 
@@ -57,7 +69,7 @@
 >  0.堆内：老年代PS Old Generation使用率占99.99%，再结合gc log，如果老年代回收不掉，基本确认为堆上内存泄露；堆外：Java使用堆外内存导致的内存泄露、Java程序使用C++导致的内存泄露  
 >  1.堆上内存泄漏：首先用jdk/bin/jmap -dump:live,format=b,file=heap.hprof {pid}，导出堆里所有活着的对象，然后用工具分析heap.hprof  
 >  2.对象被静态对象引用：右键RaftServerMetrics->Merge shortest path to GC Roots ->with all references查找所有引用RaftServerMetrics的地方  
->  3.RPC连接使用完后未关闭： 
+>  3.RPC连接使用完后未关闭：  
 >  4.堆外内存泄露：首先开启-XX:NativeMemoryTracking=detail显示的内存不包含C++分配的内存（为了快速验证是否DirectByteBuffer导致内存泄露，可使用参数-XX:MaxDirectMemorySize限制DirectByteBuffer分配的堆外内存大小，如果堆外内存仍然大于MaxDirectMemorySize，可基本排除DirectByteBuffer导致的内存泄露）  
 >  5.Java调用C++组件：  
 > 性能优化：  
@@ -75,14 +87,14 @@
 
 [Java中9种常见的CMS GC问题分析与解决](https://mp.weixin.qq.com/s/BoMAIurKtQ8Wy1Vf_KkyGw)  
 
-[你可能未曾使用的新 Java 特性](https://mp.weixin.qq.com/s/uSEkyQ6AGffxIgEFJzwHvQ)  
-
 [java线程池（newFixedThreadPool）线程消失疑问？](https://www.zhihu.com/question/27474985)  
 > 线程池的异常线程会被销毁，然后重新创建新的线程来补位
 
 [分享近期社区的几个经典的JVM问题](https://mp.weixin.qq.com/s/Rbg7OiUByzqq46aLPh1r8A)  
 
 [字节码增强：原理与实战](https://mp.weixin.qq.com/s/vTfnj8SXUx4_0Ayar2NPPw)  
+
+[ARM环境下Java应用卡顿优化案例](https://mp.weixin.qq.com/s/dqHTbLk9ETnBPQh2WrUmTg)  
 
 [Java ConcurrentHashMap 高并发安全实现原理解析](https://mp.weixin.qq.com/s/4sz6sTPvBigR_1g8piFxug)  
 
@@ -101,25 +113,11 @@
 > count方法先尝试两次不行再加锁，modCount变量，在put, remove和clean方法里操作元素前都会将变量modCount进行加1  
 > 那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化
 
-[ARM环境下Java应用卡顿优化案例](https://mp.weixin.qq.com/s/dqHTbLk9ETnBPQh2WrUmTg)  
-
-[Java8之Consumer、Supplier、Predicate和Function攻略](https://www.cnblogs.com/SIHAIloveYAN/p/11288064.html)  
-
-[java8 Stream的实现原理 (从零开始实现一个stream流)](https://www.cnblogs.com/xiaoxiongcanguan/p/10511233.html)  
-
-[Java 8 Stream原理解析](https://mp.weixin.qq.com/s/ykN7tCur0b9KXNOJtvqQ-g)  
-
-[Java内存模型深入分析](https://mp.weixin.qq.com/s/0H9yfiYvWGQByjFT-fj-ww)  
-
 [Java 语言中锁的设计与应用](https://mp.weixin.qq.com/s/cGJxllpHskK4castfOJ_gw)  
 
 [上篇 | 说说无锁(Lock-Free)编程那些事](https://mp.weixin.qq.com/s/T_z2_gsYfs6A-XjVTVV_uQ)  
 
 [下篇 | 说说无锁(Lock-Free)编程那些事（下）](https://mp.weixin.qq.com/s/h75n7sHnrmoLJ4DVAW5AUQ)  
-
-[源码深度解析 Handler 机制及应用](https://mp.weixin.qq.com/s/71OV_K7YJas7pLtsPY-jeQ)  
-
-[vivo 调用链 Agent 原理及实践](https://mp.weixin.qq.com/s/vPgBLi-2svhU_t1wN-6ZBA)  
 
 [Oracle JDK7 bug 发现、分析与解决实战](https://mp.weixin.qq.com/s/8f34CaTp--Wz5pTHKA0Xeg)  
 
@@ -186,6 +184,8 @@
 [分布式事务：Saga模式](https://www.jianshu.com/p/e4b662407c66)  
 
 ## logging tracing metrics
+
+[vivo 调用链 Agent 原理及实践](https://mp.weixin.qq.com/s/vPgBLi-2svhU_t1wN-6ZBA)  
 
 [构建 Netflix 分布式追踪（tracing）体系](https://mp.weixin.qq.com/s/NmGYfoJ7pw8CfRfUkc6o2Q)  
 
