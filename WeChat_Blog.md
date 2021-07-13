@@ -72,6 +72,7 @@
 >  3.RPC连接使用完后未关闭：  
 >  4.堆外内存泄露：首先开启-XX:NativeMemoryTracking=detail显示的内存不包含C++分配的内存（为了快速验证是否DirectByteBuffer导致内存泄露，可使用参数-XX:MaxDirectMemorySize限制DirectByteBuffer分配的堆外内存大小，如果堆外内存仍然大于MaxDirectMemorySize，可基本排除DirectByteBuffer导致的内存泄露）  
 >  5.Java调用C++组件：  
+
 > 性能优化：  
 > 1.arthas：开始perf: profiler start，采样一段时间后，停止perf: profiler stop。热点函数避免使用lambda表达式如stream.collect等  
 > 2.jaeger：  
