@@ -63,7 +63,7 @@
 > 高度定制的 Linux 内核，带有操作系统旁路，这样数据就可以直接从网卡 "跳转" 到应用程序、基于 IPC 进程间通信，甚至使用 FPGA  
 > Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。  
 
-[Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A) 
+[Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A)  
 > 内存管理：  
 0.堆内：老年代PS Old Generation使用率占99.99%，再结合gc log，如果老年代回收不掉，基本确认为堆上内存泄露；堆外：Java使用堆外内存导致的内存泄露、Java程序使用C++导致的内存泄露  
 1.堆上内存泄漏：首先用jdk/bin/jmap -dump:live,format=b,file=heap.hprof {pid}，导出堆里所有活着的对象，然后用工具分析heap.hprof  
@@ -74,7 +74,7 @@
 > 性能优化：  
 1.arthas：开始perf: profiler start，采样一段时间后，停止perf: profiler stop。热点函数避免使用lambda表达式如stream.collect等  
 2.jaeger：  
-3.tcpdump：tcpdump -i eth0 -s 0 -A 'tcp dst port 9878 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420' -w read.cap，该命令在读200M文件时会将所有GET请求导出到read.cap件，然后用wireshark打开read.cap  
+3.tcpdump：tcpdump将所有GET请求导出到read.cap件，然后用wireshark打开read.cap  
 4.jstack：top -Hp pid命令打出进程pid的所有线程及每个线程的CPU消耗；然后计算出使用CPU最高的线程号的十六进制表示0x417，再用jstack -l pid > jstack.txt命令打出所有线程状态  
 > 宕机：  
 1.被其他进程杀：排查工具有两个：linux自带的auditd和systemtap  
@@ -85,17 +85,27 @@
 1.jstack打出的死锁信息  
 
 [Java中9种常见的CMS GC问题分析与解决](https://mp.weixin.qq.com/s/BoMAIurKtQ8Wy1Vf_KkyGw)  
+> 识别垃圾: 引用计数法（Reference Counting）/可达性分析，又称引用链法（Tracing GC）
+> 收集算法: Mark-Sweep（标记 - 清除）存活对象较多时较高效/Mark-Compact （标记 - 整理）对存活对象按照整理顺序进行整理/Copying（复制）
+> 收集器: 分代收集器(ParNew/CMS)、分区收集器（G1/ZGC/Shenandoah）
+> 问题分类: IO 交互型：互联网上目前大部分的服务都属于该类型大部分对象在 TP9999 的时间内都会死亡， Young 区越大越好 / MEM 计算型:
+> 经验：System.gc 的触发类型从 Foreground 改为 Background / 尽量将成对出现的空间大小配置参数设置成固定的/ Young/Eden 区过小，我们可以在总的 Heap 内存不变的情况下适当增大 Young 区，具体怎么增加？一般情况下 Old 的大小应当为活跃对象的 2~3 倍左右
+> Dump Diff 和 Leak Suspects 比较直观: 同时分别在 CMS GC 的发生前后分别 dump 一次来分析内存泄漏
+> CMS GC 退化后，影响会非常大，建议发现一次后就彻底根治。只要能定位到内存碎片、浮动垃圾、增量收集相关等具体产生原因
+> 堆外内存泄漏: 使用 NMT（NativeMemoryTracking） 进行分析 / Google perftools + Btrace 等工具
 
 [java线程池（newFixedThreadPool）线程消失疑问？](https://www.zhihu.com/question/27474985)  
 > 线程池的异常线程会被销毁，然后重新创建新的线程来补位
 
-[分享近期社区的几个经典的JVM问题](https://mp.weixin.qq.com/s/Rbg7OiUByzqq46aLPh1r8A)  
-
 [字节码增强：原理与实战](https://mp.weixin.qq.com/s/vTfnj8SXUx4_0Ayar2NPPw)  
-
-[ARM环境下Java应用卡顿优化案例](https://mp.weixin.qq.com/s/dqHTbLk9ETnBPQh2WrUmTg)  
+> 不同需求场景下，可以不同的方式实现切面拦截逻辑；
+> AspectJ或者SpringAop只是一种对开发者友好的快捷方式，本质上还是修改的业务代码，只不过隐藏了调用逻辑，并不能真正“无侵入“；
+> javaagent可以无侵入的修改一个已发布的java组件的运行逻辑。
+> 修改某些字节或者替换整个二进制流可以修改运行时逻辑,工具集：/ASM/javaassist/ByteBuddy
+> VMTI 提供了许多事件（Event）的回调，包括虚拟机初始化、开始运行、结束，类的加载，方法出入，线程始末等等
 
 [Java ConcurrentHashMap 高并发安全实现原理解析](https://mp.weixin.qq.com/s/4sz6sTPvBigR_1g8piFxug)  
+> 这个vivo是下了功夫了
 
 [java.util.ConcurrentModificationException详解](https://www.jianshu.com/p/c5b52927a61a)  
 > 迭代ArrayList的Iterator中有一个变量expectedModCount  
@@ -119,6 +129,7 @@
 [下篇 | 说说无锁(Lock-Free)编程那些事（下）](https://mp.weixin.qq.com/s/h75n7sHnrmoLJ4DVAW5AUQ)  
 
 [Oracle JDK7 bug 发现、分析与解决实战](https://mp.weixin.qq.com/s/8f34CaTp--Wz5pTHKA0Xeg)  
+> JDK 并没有关闭 ImageIO.read(url) 代码中封装的 Socket 连接！CDN 会请求超时关闭导致服务器处于 CLOSE_WAIT？限于网络经验有限，并不能 100% 确认我的想法。模拟复现  
 
 ## OKHttp Protobuf GRPC TOMCAT
 
@@ -185,6 +196,7 @@
 ## logging tracing metrics
 
 [vivo 调用链 Agent 原理及实践](https://mp.weixin.qq.com/s/vPgBLi-2svhU_t1wN-6ZBA)  
+
 
 [构建 Netflix 分布式追踪（tracing）体系](https://mp.weixin.qq.com/s/NmGYfoJ7pw8CfRfUkc6o2Q)  
 
@@ -584,3 +596,4 @@ https://mp.weixin.qq.com/s/vzvmOXGcsX7rwY4J_--onw
 https://mp.weixin.qq.com/s/uuHeK9wJvo5hCxhQTpEVvQ
 https://mp.weixin.qq.com/s/4_TIWXgQDdCaRs3SqWCPlg
 https://mp.weixin.qq.com/s/8i8WDxqCZnv1s8W8V1YmXg
+https://mp.weixin.qq.com/s/hmD2G---vU_fxjphZFd_vQ
