@@ -15,16 +15,15 @@ gcore {pid}的命令，可以保留堆栈信息，明确具体高负载的位置
 spp 的cost_stat_tool工具/tcpdump抓包确认  
 
 [Linux 入门必看：如何60秒内分析Linux性能](https://mp.weixin.qq.com/s/HvADkICPYflS2VTuSB16rg)  
-uptime  系统启动时间  
-dmesg | tail  系统的错误日志，eg：杀死 OOM 问题的进程，丢弃 TCP 请求的问题  
-vmstat 1  查看CPU、内存、磁盘IO等待  
-mpstat -P ALL 1  打印各个 CPU 的时间统计，eg：一个使用率明显较高的 CPU 就可以明显看出来这是一个单线程应用  
-pidstat 1  pidstat 命令有点像 top 命令中的为每个 CPU 统计信息功能，但是它是以不断滚动更新的方式打印信息，而不是每次清屏打印  
-iostat -xz 1  这个工具对于理解块设备（比如磁盘）很有用，展示了请求负载和性能数据  
-free -m  显示了系统内存不足  
-sar -n DEV 1  使用这个工具是可以检测网络接口的吞吐  
-sar -n TCP,ETCP  每秒本地发起的 TCP 连接数；每秒远程发起的连接数；每秒 TCP 重传数（重传是网络或者服务器有问题的一个信号）
-top  
+**uptime**  系统启动时间  
+**dmesg** | tail  系统的错误日志，eg：杀死 OOM 问题的进程，丢弃 TCP 请求的问题  
+**vmstat 1**  查看CPU、内存、磁盘IO等待  
+**mpstat -P ALL 1**  打印各个 CPU 的时间统计，eg：一个使用率明显较高的 CPU 就可以明显看出来这是一个单线程应用  
+**pidstat 1**  pidstat 命令有点像 top 命令中的为每个 CPU 统计信息功能，但是它是以不断滚动更新的方式打印信息，而不是每次清屏打印  
+**iostat -xz 1**  这个工具对于理解块设备（比如磁盘）很有用，展示了请求负载和性能数据  
+**free -m**  显示了系统内存不足  
+**sar -n DEV 1**  使用这个工具是可以检测网络接口的吞吐  
+**sar -n TCP,ETCP**  每秒本地发起的 TCP 连接数；每秒远程发起的连接数；每秒 TCP 重传数（重传是网络或者服务器有问题的一个信号）    
 
 [​Linux CPU 性能优化指南](https://mp.weixin.qq.com/s/7HGjAy_R_sdpfckFlFr0cw)  
 工具帖  
@@ -46,12 +45,12 @@ Linux 内核中，Netfiler 在网络层设置了多个 Hook 点
 在 Linux 上提供了 sched_setaffinity 方法，来实现将线程绑定到某个 CPU 核心这一功能  
 
 [彻底搞懂 IO 底层原理](https://mp.weixin.qq.com/s/_Eh7eZLtcUjrp9QiCvLmrw)  
-BIO 一个线程大约占用1M的空间;如果线程数量庞大，会造成线程做上下文切换的时间甚至大于线程执行的时间，CPU负载变高  
-NIO 用户进程需要不断去主动询问内核数据准备好了没有;用户进程不断切换到内核态
+**BIO** 一个线程大约占用1M的空间;如果线程数量庞大，会造成线程做上下文切换的时间甚至大于线程执行的时间，CPU负载变高  
+**NIO** 用户进程需要不断去主动询问内核数据准备好了没有;用户进程不断切换到内核态
 IO多路复用  
-select()  :复杂度O(n)  fd_set不可重用，fd_set有大小的限制，目前被硬编码成了1024；每次操作完都必须重置,数据取出后也需要轮询哪个fd上发生了变动
-poll()  :通过event变量注册感兴趣的可读可写事件（POLLIN、POLLOUT），最后把 pollfd 交给内核。当有读写事件触发的时候，我们可以通过轮询 pollfd，判断revent确定该fd是否发生了可读可写事件  
-epoll()  :O(1)  复杂度，返回的"nfds"是一个确定的可读写的数量，相比于之前循环n次来确认，复杂度降低了不少  
+**select()**  :复杂度O(n)  fd_set不可重用，fd_set有大小的限制，目前被硬编码成了1024；每次操作完都必须重置,数据取出后也需要轮询哪个fd上发生了变动
+**poll()**  :通过event变量注册感兴趣的可读可写事件（POLLIN、POLLOUT），最后把 pollfd 交给内核。当有读写事件触发的时候，我们可以通过轮询 pollfd，判断revent确定该fd是否发生了可读可写事件  
+**epoll()**  :O(1)  复杂度，返回的"nfds"是一个确定的可读写的数量，相比于之前循环n次来确认，复杂度降低了不少  
 
 [深入理解计算机系统：进程](https://mp.weixin.qq.com/s/z6K8C56FnNVKu6XAQefViQ)  
 
@@ -62,7 +61,7 @@ epoll()  :O(1)  复杂度，返回的"nfds"是一个确定的可读写的数量�
 
 [为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)  
 高度定制的 Linux 内核，带有操作系统旁路，这样数据就可以直接从网卡 "跳转" 到应用程序、基于 IPC 进程间通信，甚至使用 FPGA  
-Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。    
+Zing虚拟机 解决了 GC 暂停和 JIT 编译问题  
 
 [Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A)  
 内存管理：  
@@ -86,14 +85,14 @@ Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。
 1.jstack打出的死锁信息  
 
 [Java中9种常见的CMS GC问题分析与解决](https://mp.weixin.qq.com/s/BoMAIurKtQ8Wy1Vf_KkyGw)  
-识别垃圾: 引用计数法（Reference Counting）/可达性分析，又称引用链法（Tracing GC）  
- 收集算法: Mark-Sweep（标记 - 清除）存活对象较多时较高效/Mark-Compact （标记 - 整理）对存活对象按照整理顺序进行整理/Copying（复制）  
- 收集器: 分代收集器(ParNew/CMS)  、分区收集器（G1/ZGC/Shenandoah）  
- 问题分类: IO 交互型：互联网上目前大部分的服务都属于该类型大部分对象在 TP9999 的时间内都会死亡， Young 区越大越好 / MEM 计算型:  
- 经验：System.gc 的触发类型从 Foreground 改为 Background / 尽量将成对出现的空间大小配置参数设置成固定的/ Young/Eden 区过小，我们可以在总的 Heap 内存不变的情况下适当增大 Young 区，具体怎么增加？一般情况下 Old 的大小应当为活跃对象的 2~3 倍左右  
- Dump Diff 和 Leak Suspects 比较直观: 同时分别在 CMS GC 的发生前后分别 dump 一次来分析内存泄漏  
- CMS GC 退化后，影响会非常大，建议发现一次后就彻底根治。只要能定位到内存碎片、浮动垃圾、增量收集相关等具体产生原因  
- 堆外内存泄漏: 使用 NMT（NativeMemoryTracking） 进行分析 / Google perftools + Btrace 等工具  
+**识别垃圾**: 引用计数法（Reference Counting）/可达性分析，又称引用链法（Tracing GC）  
+**收集算法**: Mark-Sweep（标记 - 清除）存活对象较多时较高效/Mark-Compact （标记 - 整理）对存活对象按照整理顺序进行整理/Copying（复制）  
+**收集器**: 分代收集器(ParNew/CMS)  、分区收集器（G1/ZGC/Shenandoah）  
+**问题分类**: IO 交互型：互联网上目前大部分的服务都属于该类型大部分对象在 TP9999 的时间内都会死亡， Young 区越大越好 / MEM 计算型:  
+**经验**：System.gc 的触发类型从 Foreground 改为 Background / 尽量将成对出现的空间大小配置参数设置成固定的/ Young/Eden 区过小，我们可以在总的 Heap 内存不变的情况下适当增大 Young 区，具体怎么增加？一般情况下 Old 的大小应当为活跃对象的 2~3 倍左右  
+**Dump Diff 和 Leak Suspects 比较直观**: 同时分别在 CMS GC 的发生前后分别 dump 一次来分析内存泄漏  
+CMS GC 退化后，影响会非常大，建议发现一次后就彻底根治。只要能定位到内存碎片、浮动垃圾、增量收集相关等具体产生原因  
+**堆外内存泄漏**: 使用 NMT（NativeMemoryTracking） 进行分析 / Google perftools + Btrace 等工具  
 
 [java线程池（newFixedThreadPool）线程消失疑问？](https://www.zhihu.com/question/27474985)  
 线程池的异常线程会被销毁，然后重新创建新的线程来补位  
@@ -124,30 +123,30 @@ count方法先尝试两次不行再加锁，modCount变量，在put, remove和cl
 那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化  
 
 [Java 语言中锁的设计与应用](https://mp.weixin.qq.com/s/cGJxllpHskK4castfOJ_gw)  
-无锁(01)  : CAS 原理及应用即是无锁的实现。无锁无法全面代替有锁，但无锁在某些场合下的性能是非常高的。  
-偏向锁(01)  : 在 Mark Word 里存储锁偏向的线程 ID。在线程进入和退出同步块时不再通过 CAS 操作来加锁和解锁，而是检测 Mark Word 里是否存储着指向当前线程的偏向锁。  
-轻量级锁(00)  : 指当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。  
-重量级锁(10)  : 若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。  
-公平锁 VS 非公平锁(ReentrantLock)  : 源码区别hasQueuedPredecessors()  :主要是判断当前线程是否位于同步队列中的第一个。如果是则返回 true，否则返回 false。  
-可重入锁 VS 非可重入锁(NonReentrantLock)  : 其父类 AQS 中维护了一个同步状态 status 来计数重入次数，status 初始值为 0。  
-独享锁 VS 共享锁(ReentrantReadWriteLock)  : 将 state 变量 “按位切割” 切分成了两个部分，高 16 位表示读锁状态（读锁个数），低 16 位表示写锁状态（写锁个数）。  
+**无锁(01)**: CAS 原理及应用即是无锁的实现。无锁无法全面代替有锁，但无锁在某些场合下的性能是非常高的。  
+**偏向锁(01)**: 在 Mark Word 里存储锁偏向的线程 ID。在线程进入和退出同步块时不再通过 CAS 操作来加锁和解锁，而是检测 Mark Word 里是否存储着指向当前线程的偏向锁。  
+**轻量级锁(00)**: 指当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。  
+**重量级锁(10)**: 若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。  
+**公平锁 VS 非公平锁(ReentrantLock)**: 源码区别hasQueuedPredecessors()  :主要是判断当前线程是否位于同步队列中的第一个。如果是则返回 true，否则返回 false。  
+**可重入锁 VS 非可重入锁(NonReentrantLock)**: 其父类 AQS 中维护了一个同步状态 status 来计数重入次数，status 初始值为 0。  
+**独享锁 VS 共享锁(ReentrantReadWriteLock)**: 将 state 变量 “按位切割” 切分成了两个部分，高 16 位表示读锁状态（读锁个数），低 16 位表示写锁状态（写锁个数）。  
 
 [自动的内存管理系统实操手册——Java垃圾回收篇](https://mp.weixin.qq.com/s/KqsFuvTo_M5w7xoYe0gGrw)  
 Java 堆和方法区是垃圾收集器管理的主要区域  
-对象晋升到老年代的年龄阈值，可以通过参数-XX:MaxTenuringThreshold来设置  
-当对象没有覆盖finalize方法，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行第一次标记  
-标记清除算法（适合old）: 1.空间问题，易产生内存碎片；2.效率问题，扫描了整个空间两次  
-标记复制算法（适合young）: 需要一块儿空的内存空间，整理阶段，由于移动了可用对象，需要去更新引用。  
-标记整理算法 (适合old)  : 在清理时，是先把所有存活对象往一端移动，然后直接清掉边界以外的内存。  
+**对象晋升到老年代的年龄阈值**，可以通过参数-XX:MaxTenuringThreshold来设置  
+**当对象没有覆盖finalize方法**，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行第一次标记  
+**标记清除算法（适合old）**: 1.空间问题，易产生内存碎片；2.效率问题，扫描了整个空间两次  
+**标记复制算法（适合young）**: 需要一块儿空的内存空间，整理阶段，由于移动了可用对象，需要去更新引用。  
+**标记整理算法 (适合old）**: 在清理时，是先把所有存活对象往一端移动，然后直接清掉边界以外的内存。  
 
 [自动的内存管理系统实操手册——Golang垃圾回收篇](https://mp.weixin.qq.com/s/yEPCSzBvp1SqkyOcx2r1jQ)  
 
 [自动的内存管理系统实操手册——Java和Golang对比篇](https://mp.weixin.qq.com/s/1DZ8ENjsxrKypjr2RGhruQ)  
-触发垃圾回收的时机：Java当应用程序空闲时，Java堆内存不足时，GC会被调用；Go runtime.mallocgc申请内存时根据堆大小触发GC，runtime.GC用户程序手动触发GC，runtime.forcegchelper后台运行定时检查触发GC  
-收集算法：当前Java虚拟机的垃圾收集采用分代收集算法，当前Go的都是基于标记清除算法进行垃圾回收  
-垃圾碎片处理：JVM在处理内存碎片问题上更多采用空间压缩和分代收集的思想；Go语言span内存池的设计，减轻了很多内存碎片的问题  
-“GC Roots” 的对象选择：Go的选择就相对简单一点，即全局变量和G Stack中的引用指针，简单来说就是全局量和go程中的引用指针。  
-写屏障：CMS是基于“Dijkstra插入写屏障”做并发标记的，G1、Shenandoah则是使用“Yuasa删除写屏障”来实现的；  
+**触发垃圾回收的时机**：Java当应用程序空闲时，Java堆内存不足时，GC会被调用；Go runtime.mallocgc申请内存时根据堆大小触发GC，runtime.GC用户程序手动触发GC，runtime.forcegchelper后台运行定时检查触发GC  
+**收集算法**：当前Java虚拟机的垃圾收集采用分代收集算法，当前Go的都是基于标记清除算法进行垃圾回收  
+**垃圾碎片处理**：JVM在处理内存碎片问题上更多采用空间压缩和分代收集的思想；Go语言span内存池的设计，减轻了很多内存碎片的问题  
+**“GC Roots” 的对象选择**：Go的选择就相对简单一点，即全局变量和G Stack中的引用指针，简单来说就是全局量和go程中的引用指针。  
+**写屏障**：CMS是基于“Dijkstra插入写屏障”做并发标记的，G1、Shenandoah则是使用“Yuasa删除写屏障”来实现的；  
 
 ![20210823143918.jpg](pic/20210823143918.jpg)  
 
@@ -168,8 +167,8 @@ OkHttp不是在线程池中维护线程的个数，线程是一直在Dispatcher�
 在一个 TCP 连接上，我们可以向对方不断发送帧，每帧的 stream identifier 的标明这一帧属于哪个流，然后在对方接收时，根据 stream identifier 拼接每个流的所有帧组成一整块数据。  
 
 * Grpc协议
-gRPC 协议，简单来说就是 http2 协议的基础之上，增加了特定的协议 header：“grpc-” 开头的 header 字段，采用特定的打解包工具（protobuf）对数据进行序列化，从而实现 RPC 调用。  
-在 gRPC 的 stream 调用中，可在 server 端回传的过程中发送多次 Data，调用结束后再发送 Header 终止 RPC 过程，并汇报状态信息。  
+**gRPC 协议**，简单来说就是 http2 协议的基础之上，增加了特定的协议 header：“grpc-” 开头的 header 字段，采用特定的打解包工具（protobuf）对数据进行序列化，从而实现 RPC 调用。  
+**在 gRPC 的 stream 调用中**，可在 server 端回传的过程中发送多次 Data，调用结束后再发送 Header 终止 RPC 过程，并汇报状态信息。  
 
 [gRPC客户端详解](http://liumenghan.github.io/2019/10/07/grpc-in-depth/)  
 Thrift的客户端是线程不安全的——这意味着在Spring中无法以单例形式注入到Bean中  
@@ -181,19 +180,22 @@ gRPC的客户端有同步阻塞客户端（blockingStub)  和异步非阻塞客�
 [gRPC 基础概念详解](https://mp.weixin.qq.com/s/I2QHEBO26nGqhGwIw281Pg)  
 无论是 Client 还是 Server，在以异步方式进行处理时，都要预先分配好一定的内存 / 对象，以存储异步的请求或返回。  
 其实，回调方式的异步调用属于实验性质的，不建议直接在生产环境使用，这里也只做简单的介绍：  
-Notice: This API is EXPERIMENTAL and may be changed or removed at any time.  
-Client 发送流，是通过 Writer->WritesDone()   函数结束流  
-Server 发送流，是通过结束 RPC 函数并返回状态码的方式来结束流  
+**Notice**: This API is EXPERIMENTAL and may be changed or removed at any time.  
+**Client 发送流**，是通过 Writer->WritesDone()   函数结束流  
+**Server 发送流**，是通过结束 RPC 函数并返回状态码的方式来结束流  
 流接受者，都是通过 Reader->Read()   返回的 bool 型状态，来判断流是否结束  
 Server 并没有像 Client 一样调用 WriteDone()  ，而是在消息之后，将 status code、可选的 status message、可选的 trailing metadata 追加进行发送，这就意味着流结束了  
 End-Of-Stream 并没有单独的数据去描述，而是通过 HTTP2 的数据帧上带一个 END_STREAM 的 flag 来标识的  
 
 [深入了解 gRPC：协议](https://mp.weixin.qq.com/s/GEaTUTp_wuILYTVbZvJo7g)  
 
+[使用Wireshark分析gRPC消息](https://mp.weixin.qq.com/s/7yONCsXhKw1TOIGqf4Eo9g)  
+在preferences > Protocols > Protobuf下Edit辑菜单中设置Protobuf的搜索路径，从而告诉Wireshark在哪里可以找到.proto文件。  
+
 [程序员如何用gRPC谈一场恋爱](https://mp.weixin.qq.com/s/Y2sHs_Sq4lB3hBhKGSvaNg)  
-A client-to-server streaming RPC :1.agent上报CPU，内存等数据到server;2.客户端心跳;3.客户端并发调用细小粒度的接口。  
-A server-to-client streaming RPC :1.股票app。客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端;2.app的在线push。  
-A Bidirectional streaming RPC 1.聊天机器人;2.有状态的游戏服务器进行数据交换。  
+**A client-to-server streaming RPC** :1.agent上报CPU，内存等数据到server;2.客户端心跳;3.客户端并发调用细小粒度的接口。  
+**A server-to-client streaming RPC** :1.股票app。客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端;2.app的在线push。  
+**A Bidirectional streaming RPC** 1.聊天机器人;2.有状态的游戏服务器进行数据交换。  
 
 [巧用 Protobuf 反射来优化代码，拒做 PB Boy](https://mp.weixin.qq.com/s/ALhSKrLwNdA_GkozJQXn5g)  
 获取 PB 中所有非空字段：bool has_field = reflection->HasField(message, field)  
@@ -265,21 +267,21 @@ A Bidirectional streaming RPC 1.聊天机器人;2.有状态的游戏服务器进
 此时，其实并不能说明服务端已经完全关闭了连接，它还有可能是发送fin包，只是为了关闭其send端，但它还是可以读的，所以客户端理应也可以继续写。  
 
 [【TCP】CONNECTION RESET BY PEER 原因分析定位](https://www.freesion.com/article/1316615554/)  
-客户端recev-Q阻塞，表明客户端处理不过来，操作系统接收缓冲区阻塞，程序没有及时消费掉；  
-nginx服务端send-Q阻塞，不能及时发出去，表明下游程序收不过来，和上述客户端现象表现一致；  
-查看客户端处理代码逻辑，发现单线程处理，效率低下，改成异步线程池提交处理的方式，问题解决。  
-linux操作系统的三个参数，跟此次现象有关：net.ipv4.tcp_keepalive_time;net.ipv4.tcp_keepalive_intvl;net.ipv4.tcp_keepalive_probes
+1.客户端recev-Q阻塞，表明客户端处理不过来，操作系统接收缓冲区阻塞，程序没有及时消费掉  
+2.nginx服务端send-Q阻塞，不能及时发出去，表明下游程序收不过来，和上述客户端现象表现一致；  
+3.查看客户端处理代码逻辑，发现单线程处理，效率低下，改成异步线程池提交处理的方式，问题解决。  
+4.linux操作系统的三个参数，跟此次现象有关：net.ipv4.tcp_keepalive_time;net.ipv4.tcp_keepalive_intvl;net.ipv4.tcp_keepalive_probes
 
 [JAVA.IO.IOEXCEPTION: CONNECTION RESET BY PEER问题解决](https://www.freesion.com/article/3680678097/)  
-当并发请求超过服务器的承载量时，服务器会停掉一些请求。  
-客户端关闭了  
-防火墙/nginx影响了,1>高并发的处理;2>防DDOS攻击;3>爬虫扫描等等  
+1.当并发请求超过服务器的承载量时，服务器会停掉一些请求   
+2.客户端关闭了  
+3.防火墙/nginx影响了,1>高并发的处理;2>防DDOS攻击;3>爬虫扫描等等  
 
 [https连接的前几毫秒发生了什么](https://www.rrfed.com/2017/02/03/https/)  
-https解决什么问题:1.域名污染/2.APR欺骗  
-https是应对中间人攻击的唯一方式  
-RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)  
-怎样绕过https：使用ssltrip，这个工具它的实现原理是先使用arp欺骗和用户建立连接，然后强制将用户访问的https替换成http。即中间人和用户之间是http，而和服务器还是用的https  
+1.https解决什么问题:1.域名污染/2.APR欺骗  
+2.https是应对中间人攻击的唯一方式  
+3.RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)  
+4.怎样绕过https：使用ssltrip，这个工具它的实现原理是先使用arp欺骗和用户建立连接，然后强制将用户访问的https替换成http。即中间人和用户之间是http，而和服务器还是用的https  
 
 [一文读懂 HTTP/1HTTP/2HTTP/3](https://mp.weixin.qq.com/s/fy84edOix5tGgcvdFkJi2w)  
 
@@ -287,29 +289,34 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [移动端APM网络监控与优化方案](https://mp.weixin.qq.com/s/MnlxrUwB57lqE1aExr0iGA)  
 网络状况较好时，HTTP2.0多路复用，带来了性能上的优势，但在网络不稳定时，HTTP1.1错误率低于HTTP2.0。
-1. 多域名连接共享，实现0RTT多路复用
-2. 避免了DNS解析，防止DNS劫持
-3. protobuf编码私有协议，节省流量
+1.多域名连接共享，实现0RTT多路复用  
+2.避免了DNS解析，防止DNS劫持
+3.protobuf编码私有协议，节省流量
 
 [深入理解web协议(二)  ：DNS、WebSocket](https://mp.weixin.qq.com/s/AkbAN4UZLDf841g1ZLFPBQ)  
 
 [深入理解 web 协议(一)  - http 包体传输](https://mp.weixin.qq.com/s/WlT8070LlrnSODFRDwZsUQ)  
 
+[一文搞定 Wireshark 网络数据包分析](https://mp.weixin.qq.com/s/hL96imOvuodILIhI70fbTg)  
+调整数据包列表中时间戳显示格式:View -->Time Display Format --> Date and Time of Day。
+![20210823152027.jpg](pic/20210823152027.jpg)  
+![20210823152132.jpg](pic/20210823152132.jpg)  
+
 ## REDIS ES MYSQL MongoDB
 
 [Redis 进阶笔记](https://mp.weixin.qq.com/s/o66KCbJUj4RsgXFjXzLzoQ)  
-Redis 里的 List 设计非常牛，当数据量比较小的时候，数据结构是压缩链表，而当数据量比较多的时候就成为了快速链表。  
-hash 的扩容 rehash 过程就是维护了两个 hash 结构，如果需要扩容的时候，就把新的数据写入新字典中，然后后端起一个线程来逐步迁移，总体上来说就是采用了空间换时间的思想。  
-对于上游的客户端请求，采用了多路复用的原理。Redis 会给每一个客户端套接字都关联一个指令队列，客户端的指令队列通过队列排队来进行顺序处理，同时 Reids 给每一个客户端的套件字关联一个响应队列，Redis 服务器通过响应队列来将指令的接口返回给客户端  
+1.Redis 里的 List 设计非常牛，当数据量比较小的时候，数据结构是压缩链表，而当数据量比较多的时候就成为了快速链表。  
+2.hash 的扩容 rehash 过程就是维护了两个 hash 结构，如果需要扩容的时候，就把新的数据写入新字典中，然后后端起一个线程来逐步迁移，总体上来说就是采用了空间换时间的思想。  
+3.对于上游的客户端请求，采用了多路复用的原理。Redis 会给每一个客户端套接字都关联一个指令队列，客户端的指令队列通过队列排队来进行顺序处理，同时 Reids 给每一个客户端的套件字关联一个响应队列，Redis 服务器通过响应队列来将指令的接口返回给客户端  
 在 Redis 4.0 之后，支持了混合持久化 RDB + 增量的 AOF 文件  
 
 [这篇Redis文章，Antirez看了都说好](https://mp.weixin.qq.com/s/DCngASQ7gsKpFA2JHCH7Sg)  
 mem_fragmentation_ratio一般大于1，且该值越大，内存碎片比例越大。如果mem_fragmentation_ratio<1，说明Redis使用了虚拟内存，由于虚拟内存的媒介是磁盘，比内存速度要慢很多，当这种情况出现时，应该及时排查，如果内存不足应该及时处理  
 
 [聊一聊Redis持久化开与关](https://mp.weixin.qq.com/s/TZnDk_5qScLFPGPhwrxTQA)  
-RDB备份：格式多变（Redis 3 4 5 6版本多次修改）  
-AOF备份：加载慢：利用fakeclient做回放，AOF重写还是动作不，开启AOF后，Redis的写性能下降了8~25%，读性能未下降  
-RDB-AOF混合：持久化文件全量使用RDB，增量使用AOF，保证体积、实时性、加载速度。  
+**RDB备份：**格式多变（Redis 3 4 5 6版本多次修改）  
+**AOF备份：**加载慢：利用fakeclient做回放，AOF重写还是动作不，开启AOF后，Redis的写性能下降了8~25%，读性能未下降  
+**RDB-AOF混合：**持久化文件全量使用RDB，增量使用AOF，保证体积、实时性、加载速度。  
 
 [Redis小功能大用处(1)  -stat_expired_time_cap_reached_count](https://mp.weixin.qq.com/s/3UxXnSus0HTlA0ndpLZPgg)  
 
@@ -364,10 +371,10 @@ codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子
 死锁的本质原因还是由加锁顺序不同所导致，是由于Index Merge同时使用2个索引方向加锁所导致，解决方法也比较简单，就是消除因index merge带来的多个索引同时执行的情况。  
 
 [让MySQL飞起来！别小看这21种写SQL的好习惯](https://mp.weixin.qq.com/s/snV9i2qUR1yUje80YzxwOg)  
-操作delete或者update语句，加个limit  
-SQL命令行修改数据，养成begin + commit 事务的习惯  
-写完SQL先explain查看执行计划  
-如果修改/更新数据过多，考虑批量进行  
+* 操作delete或者update语句，加个limit  
+* SQL命令行修改数据，养成begin + commit 事务的习惯  
+* 写完SQL先explain查看执行计划  
+* 如果修改/更新数据过多，考虑批量进行  
 
 [我在MySQL原厂的那些年都经历了什么？](https://mp.weixin.qq.com/s/HW7tji_fQBeOa7kr2xsmtg)  
 
@@ -407,6 +414,13 @@ routing id不均衡：集群容量和访问不均衡，对于分布式存储是�
 [Elasticsearch调优实践](https://mp.weixin.qq.com/s/0TMESj2Z-XK2PzwBQo0Mpg)  
 cluster.routing.allocation.enable: "none"，实际上影响的是已有索引(local存在)  的replica，以及新创建索引的primary和replica。  
 
+[亿级日增量的ES线上环境集群部署，上干货！](https://mp.weixin.qq.com/s/8PjfMqZGDkOk_hv4iIaqNg)  
+**内存：** 官方标准建议是：将 50％ 的可用内存（不超过 32 GB，一般建议最大设置为：31 GB）分配给 Elasticsearch 堆，而其余 50％ 留给 Lucene 缓存。  
+**线程：** 由于 Elasticsearch会做动态分配，除非有非常具体的要求，否则不建议更改线程池和队列大小。  
+**分片数：** 建议：为主节点（Master 节点）分配足够的资源以应对分片数过多可能导致的问题。  
+
+![20210823153339.jpg](pic/20210823153339.jpg)
+
 [分布式搜索引擎Elasticsearch的架构分析](https://mp.weixin.qq.com/s/N_y7BxbO9pCTrgJbDq4bOA)  
 
 [连环触发！MongoDB核心集群雪崩故障背后竟是……](https://mp.weixin.qq.com/s/3bzKacpe3TD6k0y4pFXHCQ)  
@@ -427,21 +441,21 @@ cluster.routing.allocation.enable: "none"，实际上影响的是已有索引(lo
 [vivo 基于原生 RabbitMQ 的高可用架构实践](https://mp.weixin.qq.com/s/7s9-RsLWgiVvw28U51J0bA)  
 
 [简单理解 Kafka 的消息可靠性策略](https://mp.weixin.qq.com/s/T6gCc8OBgyV-yeAg_MUzPQ)  
-ISR : leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica  
+**ISR :** leader 副本保持一定同步的 follower 副本, 包括 leader 副本自己，叫 In Sync Replica  
 HW: Highwater, 俗称高水位，它表示了一个特定的消息偏移量(offset)  在一个 parttion 中 consumer 只能拉取这个 offset 之前的消息(此 offset 跟 consumer offset 不是一个概念)  
-LEO: LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset  
-leader HW: 该 Partititon 所有副本的 LEO 最小值  
-follower HW: min(follower 自身 LEO 和 leader HW)  
-Leader HW = 所有副本 LEO 最小值  
-Follower HW = min(follower 自身 LEO 和 leader HW)  
-Leader 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO  
+**LEO:** LogEndOffset, 日志末端偏移量, 用来表示当前日志文件中下一条写入消息的 offset  
+**leader HW:** 该 Partititon 所有副本的 LEO 最小值  
+**follower HW:** min(follower 自身 LEO 和 leader HW)  
+**Leader HW** = 所有副本 LEO 最小值  
+**Follower HW** = min(follower 自身 LEO 和 leader HW)  
+**Leader** 不仅保存了自己的 HW &LEO 还保存了远端副本的 HW &LEO  
 在kafka配置为AP系统的情况下发生截断发生的概率会大大提升  
-Kafka Broker 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中  
+**Kafka Broker** 会在内存中为每个分区都缓存 Leader Epoch 数据，同时它还会定期地将这些信息持久化到一个 checkpoint 文件中  
 
 [从演进式角度看消息队列](https://mp.weixin.qq.com/s/2NoRkIKG0IFcoI-nZienAQ)  
-redis实现的话：热key的问题/数据会被删除；topic在kafka中更多是一个逻辑上的概念，实际存储单元都是partition；kafka用游标（cursor）  
-kafka在实际存储partition时又进行了一个拆分。topicA-partition-0的数据并不是写到一个文件里，而是写到多个segment文件里,当segment中所有消息都过期时，可以很容易地直接删除整个文件。  
-为了防止kafka的index过大，权衡之下kafka选择了使用”稀疏索引“。  
+**redis实现的话：** 热key的问题/数据会被删除；topic在kafka中更多是一个逻辑上的概念，实际存储单元都是partition；kafka用游标（cursor）  
+**kafka在实际存储partition时又进行了一个拆分**：topicA-partition-0的数据并不是写到一个文件里，而是写到多个segment文件里,当segment中所有消息都过期时，可以很容易地直接删除整个文件。  
+**为了防止kafka的index过大**，权衡之下kafka选择了使用”稀疏索引“。  
 
 [总结 Kafka 背后的优秀设计](https://mp.weixin.qq.com/s/dfOP2MeBOqFqg_BdcJCYug)  
 利用了 Page cache 来存储，这样躲开了数据在 JVM 因为 GC 而发生的 STW  
