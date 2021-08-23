@@ -147,7 +147,6 @@ Java 堆和方法区是垃圾收集器管理的主要区域
 **垃圾碎片处理**：JVM在处理内存碎片问题上更多采用空间压缩和分代收集的思想；Go语言span内存池的设计，减轻了很多内存碎片的问题  
 **“GC Roots” 的对象选择**：Go的选择就相对简单一点，即全局变量和G Stack中的引用指针，简单来说就是全局量和go程中的引用指针。  
 **写屏障**：CMS是基于“Dijkstra插入写屏障”做并发标记的，G1、Shenandoah则是使用“Yuasa删除写屏障”来实现的；  
-
 ![20210823143918.jpg](pic/20210823143918.jpg)  
 
 [上篇 | 说说无锁(Lock-Free)  编程那些事](https://mp.weixin.qq.com/s/T_z2_gsYfs6A-XjVTVV_uQ)  
@@ -409,20 +408,44 @@ codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子
 * 拒绝深度分页  
 * 禁止查询 indexName-*  
 
-[干货 | 携程Elasticsearch数据同步实践](https://mp.weixin.qq.com/s/2PRX_vVhi3SygrZydBfG6w)  
+[Elasticsearch内核解析 - 写入篇](https://zhuanlan.zhihu.com/p/34669354)  
+* ES的写操作是primary写入完成之后，同时给replica
+源码位置：org.elasticsearch.action.support.replication.ReplicationOperation#execute
+写入操作的延时 latency = Latency(Primary Write) + Max(Replicas Write)  
+![20210823161847.jpg](pic/20210823161847.jpg)  
+**可靠性**：由于Lucene的设计中不考虑可靠性，在Elasticsearch中通过Replica和TransLog两套机制保证数据的可靠性。  
+**原子性**：Add和Delete都是直接调用Lucene的接口，是原子的。当部分更新时，使用`Version`和锁保证更新是原子的  
+**性能**  
+一是不需要所有Replica都返回后才能返回给用户，只需要返回特定数目的就行；  
+二是生成的Segment现在内存中提供服务，等一段时间后才刷新到磁盘，Segment在内存这段时间的可靠性由TransLog保证；  
+三是TransLog可以配置为周期性的Flush，但这个会给可靠性带来伤害；  
+四是每个线程持有一个Segment，多线程时相互不影响，相互独立，性能更好；  
+五是系统的写入流程对版本依赖较重，读取频率较高，因此采用了versionMap，减少热点数据的多次磁盘IO开销。  
+
+[Elasticsearch分布式一致性原理剖析(一)-节点篇](https://zhuanlan.zhihu.com/p/34830403)  
+1 扩容DataNode  
+2 缩容DataNode 我们需要把这个Node上的Shards迁移到其他节点上，方法是先设置allocation规则，禁止分配Shard到要缩容的机器上，然后让集群进行rebalance。  
+3 扩容MasterNode 假设之前3个master-eligible node，我们可以配置quorum为2，如果扩容到4个master-eligible node，那么quorum就要提高到3。  
+4 缩容MasterNode  
+ES的leader选举：  
+**是否有选举周期term**：raft引入了选举周期的概念，每轮选举term加1，保证了在同一个term下每个参与人只能投1票。ES在选举时没有term的概念，不能保证每轮每个节点只投一票。  
+**选举的倾向性**：raft中只要一个节点拥有最新的已提交的数据，则有机会选举成为master。在ES中，version相同时会按照NodeId排序，总是NodeId小的人优先级高。 
+
+[Elasticsearch分布式一致性原理剖析(二)-Meta篇](https://zhuanlan.zhihu.com/p/35283785)  
+
 
 [Elasticsearch调优实践](https://mp.weixin.qq.com/s/0TMESj2Z-XK2PzwBQo0Mpg)  
 cluster.routing.allocation.enable: "none"，实际上影响的是已有索引(local存在)  的replica，以及新创建索引的primary和replica。  
 
 [亿级日增量的ES线上环境集群部署，上干货！](https://mp.weixin.qq.com/s/8PjfMqZGDkOk_hv4iIaqNg)  
-![20210823153339.jpg](pic/20210823153339.jpg)
+![20210823153339.jpg](pic/20210823153339.jpg)  
 **内存：** 官方标准建议是：将 50％ 的可用内存（不超过 32 GB，一般建议最大设置为：31 GB）分配给 Elasticsearch 堆，而其余 50％ 留给 Lucene 缓存。  
 **线程：** 由于 Elasticsearch会做动态分配，除非有非常具体的要求，否则不建议更改线程池和队列大小。  
 **分片数：** 建议：为主节点（Master 节点）分配足够的资源以应对分片数过多可能导致的问题。官方给出的合理的建议：每个分片数据大小：30GB-50GB。  
 **副本：** 副本越多，数据的容灾性越高。副本多的另一个优点是，每个节点都拥有一个副本分片，有助于提升查询性能。  
 **冷热集群架构配置：** 冷热集群架构对于存储诸如应用程序日志或互联网实时采集数据（基于时间序列数据）特别有用。建议：至少运行 3 个热节点以实现高可用性。  
 **性能测试工具：** CPU 和 内存的分配最终需要你通过使用与生产环境中类似的环境借助 esrally 性能测试工具测试确定，而不是直接参考各种最佳实践拍脑袋而定。  
-![20210823160238.jpg](pic/20210823160238.jpg)
+![20210823160238.jpg](pic/20210823160238.jpg)  
 **节点角色划分**  
 1、主节点 如果主节点是仅是候选主节点，不含数据节点角色，则它配置要求没有那么高，因为它不存储任何索引数据。如果分片非常多，建议主节点要提高硬件配置。  
 2、数据节点 CURD、搜索以及聚合相关的操作。这些操作一般都是IO、内存、CPU 密集型。  
