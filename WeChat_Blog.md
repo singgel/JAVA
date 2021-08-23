@@ -58,6 +58,7 @@
 [Linux 内核使用 Lockdep 工具来检测和特别是预测锁的死锁场景](https://mp.weixin.qq.com/s/NA-yPnHlNEKKem9PswGAWQ)  
 
 ## JVM GC JAVA
+![JVM Generation](pic/20210823110137.jpg)
 
 [为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)  
 > 高度定制的 Linux 内核，带有操作系统旁路，这样数据就可以直接从网卡 "跳转" 到应用程序、基于 IPC 进程间通信，甚至使用 FPGA  
@@ -74,7 +75,7 @@
 > 性能优化：  
 1.arthas：开始perf: profiler start，采样一段时间后，停止perf: profiler stop。热点函数避免使用lambda表达式如stream.collect等  
 2.jaeger：  
-3.tcpdump：tcpdump将所有GET请求导出到read.cap件，然后用wireshark打开read.cap  
+3.tcpdump：tcpdump -i eth0 -s 0 -A 'tcp dst port 9878 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420' -w read.cap，该命令在读200M文件时会将所有GET请求导出到read.cap件，然后用wireshark打开read.cap  
 4.jstack：top -Hp pid命令打出进程pid的所有线程及每个线程的CPU消耗；然后计算出使用CPU最高的线程号的十六进制表示0x417，再用jstack -l pid > jstack.txt命令打出所有线程状态  
 > 宕机：  
 1.被其他进程杀：排查工具有两个：linux自带的auditd和systemtap  
@@ -128,7 +129,26 @@
 > 轻量级锁(00): 指当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。
 > 重量级锁(10): 若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。
 > 公平锁 VS 非公平锁(ReentrantLock): 源码区别hasQueuedPredecessors():主要是判断当前线程是否位于同步队列中的第一个。如果是则返回 true，否则返回 false。
-> 可重入锁 VS 非可重入锁
+> 可重入锁 VS 非可重入锁(NonReentrantLock): 其父类 AQS 中维护了一个同步状态 status 来计数重入次数，status 初始值为 0。
+> 独享锁 VS 共享锁(ReentrantReadWriteLock): 将 state 变量 “按位切割” 切分成了两个部分，高 16 位表示读锁状态（读锁个数），低 16 位表示写锁状态（写锁个数）。
+
+[自动的内存管理系统实操手册——Java垃圾回收篇](https://mp.weixin.qq.com/s/KqsFuvTo_M5w7xoYe0gGrw)
+> Java 堆和方法区是垃圾收集器管理的主要区域
+> 对象晋升到老年代的年龄阈值，可以通过参数-XX:MaxTenuringThreshold来设置
+> 当对象没有覆盖finalize方法，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行第一次标记
+> 标记清除算法（适合old）: 1.空间问题，易产生内存碎片；2.效率问题，扫描了整个空间两次
+> 标记复制算法（适合young）: 需要一块儿空的内存空间，整理阶段，由于移动了可用对象，需要去更新引用。
+> 标记整理算法 (适合old): 在清理时，是先把所有存活对象往一端移动，然后直接清掉边界以外的内存。
+
+[自动的内存管理系统实操手册——Golang垃圾回收篇](https://mp.weixin.qq.com/s/yEPCSzBvp1SqkyOcx2r1jQ)
+
+[自动的内存管理系统实操手册——Java和Golang对比篇](https://mp.weixin.qq.com/s/1DZ8ENjsxrKypjr2RGhruQ)
+> 触发垃圾回收的时机：Java当应用程序空闲时，Java堆内存不足时，GC会被调用；Go runtime.mallocgc申请内存时根据堆大小触发GC，runtime.GC用户程序手动触发GC，runtime.forcegchelper后台运行定时检查触发GC
+> 收集算法：当前Java虚拟机的垃圾收集采用分代收集算法，当前Go的都是基于标记清除算法进行垃圾回收
+> 垃圾碎片处理：JVM在处理内存碎片问题上更多采用空间压缩和分代收集的思想；Go语言span内存池的设计，减轻了很多内存碎片的问题
+> “GC Roots” 的对象选择：Go的选择就相对简单一点，即全局变量和G Stack中的引用指针，简单来说就是全局量和go程中的引用指针。
+> 写屏障：CMS是基于“Dijkstra插入写屏障”做并发标记的，G1、Shenandoah则是使用“Yuasa删除写屏障”来实现的；
+![20210823143918.jpg](pic/20210823143918.jpg)
 
 [上篇 | 说说无锁(Lock-Free)编程那些事](https://mp.weixin.qq.com/s/T_z2_gsYfs6A-XjVTVV_uQ)  
 
@@ -140,8 +160,12 @@
 ## OKHttp Protobuf GRPC TOMCAT
 
 [OkHttp3线程池相关之Dispatcher中的ExecutorService](https://github.com/soulrelay/InterviewMemoirs/issues/7)  
+> OkHttp不是在线程池中维护线程的个数，线程是一直在Dispatcher中直接控制。
+> 线程池中的请求都是运行中的请求。这也就是说线程的重用不是线程池控制的，通过源码我们发现线程重用的地方是请求结束的地方finished(AsyncCall call) ，而真正的控制是通过promoteCalls方法， 根据maxRequests和maxRequestsPerHost来调整runningAsyncCalls和readyAsyncCalls，使运行中的异步请求不超过两种最大值，并且如果队列有空闲，将就绪状态的请求归类为运行中
 
 [奇怪的知识： okhttp 是如何支持 Http2 的？](https://mp.weixin.qq.com/s/TeQhe4T4wRjdAEPz6Ne45g)  
+> 在一个 TCP 连接上，我们可以向对方不断发送帧，每帧的 stream identifier 的标明这一帧属于哪个流，然后在对方接收时，根据 stream identifier 拼接每个流的所有帧组成一整块数据。
+> 
 
 * Grpc协议
 > gRPC 协议，简单来说就是 http2 协议的基础之上，增加了特定的协议 header：“grpc-” 开头的 header 字段，采用特定的打解包工具（protobuf）对数据进行序列化，从而实现 RPC 调用。  
@@ -281,6 +305,11 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 
 [这篇Redis文章，Antirez看了都说好](https://mp.weixin.qq.com/s/DCngASQ7gsKpFA2JHCH7Sg)  
 > mem_fragmentation_ratio一般大于1，且该值越大，内存碎片比例越大。如果mem_fragmentation_ratio<1，说明Redis使用了虚拟内存，由于虚拟内存的媒介是磁盘，比内存速度要慢很多，当这种情况出现时，应该及时排查，如果内存不足应该及时处理  
+
+[聊一聊Redis持久化开与关](https://mp.weixin.qq.com/s/TZnDk_5qScLFPGPhwrxTQA)
+> RDB备份：格式多变（Redis 3 4 5 6版本多次修改）
+> AOF备份：加载慢：利用fakeclient做回放，AOF重写还是动作不，开启AOF后，Redis的写性能下降了8~25%，读性能未下降
+> RDB-AOF混合：持久化文件全量使用RDB，增量使用AOF，保证体积、实时性、加载速度。
 
 [Redis小功能大用处(1)  -stat_expired_time_cap_reached_count](https://mp.weixin.qq.com/s/3UxXnSus0HTlA0ndpLZPgg)  
 
