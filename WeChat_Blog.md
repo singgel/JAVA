@@ -62,7 +62,7 @@
 
 [为什么我们选择 Java 语言开发高频交易系统](https://mp.weixin.qq.com/s/YVv3wl9TVUhisq8gZXKscQ)  
 > 高度定制的 Linux 内核，带有操作系统旁路，这样数据就可以直接从网卡 "跳转" 到应用程序、基于 IPC 进程间通信，甚至使用 FPGA  
-> Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。  
+> Zing虚拟机 解决了 GC 暂停和 JIT 编译问题。    
 
 [Java内存泄漏、性能优化、宕机死锁的N种姿势](https://mp.weixin.qq.com/s/ASrINfC8gHbYryIWSSwT_A)  
 > 内存管理：  
@@ -86,24 +86,24 @@
 1.jstack打出的死锁信息  
 
 [Java中9种常见的CMS GC问题分析与解决](https://mp.weixin.qq.com/s/BoMAIurKtQ8Wy1Vf_KkyGw)  
-> 识别垃圾: 引用计数法（Reference Counting）/可达性分析，又称引用链法（Tracing GC）
-> 收集算法: Mark-Sweep（标记 - 清除）存活对象较多时较高效/Mark-Compact （标记 - 整理）对存活对象按照整理顺序进行整理/Copying（复制）
-> 收集器: 分代收集器(ParNew/CMS)、分区收集器（G1/ZGC/Shenandoah）
-> 问题分类: IO 交互型：互联网上目前大部分的服务都属于该类型大部分对象在 TP9999 的时间内都会死亡， Young 区越大越好 / MEM 计算型:
-> 经验：System.gc 的触发类型从 Foreground 改为 Background / 尽量将成对出现的空间大小配置参数设置成固定的/ Young/Eden 区过小，我们可以在总的 Heap 内存不变的情况下适当增大 Young 区，具体怎么增加？一般情况下 Old 的大小应当为活跃对象的 2~3 倍左右
-> Dump Diff 和 Leak Suspects 比较直观: 同时分别在 CMS GC 的发生前后分别 dump 一次来分析内存泄漏
-> CMS GC 退化后，影响会非常大，建议发现一次后就彻底根治。只要能定位到内存碎片、浮动垃圾、增量收集相关等具体产生原因
-> 堆外内存泄漏: 使用 NMT（NativeMemoryTracking） 进行分析 / Google perftools + Btrace 等工具
+> 识别垃圾: 引用计数法（Reference Counting）/可达性分析，又称引用链法（Tracing GC）  
+ 收集算法: Mark-Sweep（标记 - 清除）存活对象较多时较高效/Mark-Compact （标记 - 整理）对存活对象按照整理顺序进行整理/Copying（复制）  
+ 收集器: 分代收集器(ParNew/CMS)、分区收集器（G1/ZGC/Shenandoah）  
+ 问题分类: IO 交互型：互联网上目前大部分的服务都属于该类型大部分对象在 TP9999 的时间内都会死亡， Young 区越大越好 / MEM 计算型:  
+ 经验：System.gc 的触发类型从 Foreground 改为 Background / 尽量将成对出现的空间大小配置参数设置成固定的/ Young/Eden 区过小，我们可以在总的 Heap 内存不变的情况下适当增大 Young 区，具体怎么增加？一般情况下 Old 的大小应当为活跃对象的 2~3 倍左右  
+ Dump Diff 和 Leak Suspects 比较直观: 同时分别在 CMS GC 的发生前后分别 dump 一次来分析内存泄漏  
+ CMS GC 退化后，影响会非常大，建议发现一次后就彻底根治。只要能定位到内存碎片、浮动垃圾、增量收集相关等具体产生原因  
+ 堆外内存泄漏: 使用 NMT（NativeMemoryTracking） 进行分析 / Google perftools + Btrace 等工具  
 
 [java线程池（newFixedThreadPool）线程消失疑问？](https://www.zhihu.com/question/27474985)  
-> 线程池的异常线程会被销毁，然后重新创建新的线程来补位
+> 线程池的异常线程会被销毁，然后重新创建新的线程来补位  
 
 [字节码增强：原理与实战](https://mp.weixin.qq.com/s/vTfnj8SXUx4_0Ayar2NPPw)  
-> 不同需求场景下，可以不同的方式实现切面拦截逻辑；
-> AspectJ或者SpringAop只是一种对开发者友好的快捷方式，本质上还是修改的业务代码，只不过隐藏了调用逻辑，并不能真正“无侵入“；
-> javaagent可以无侵入的修改一个已发布的java组件的运行逻辑。
-> 修改某些字节或者替换整个二进制流可以修改运行时逻辑,工具集：/ASM/javaassist/ByteBuddy
-> VMTI 提供了许多事件（Event）的回调，包括虚拟机初始化、开始运行、结束，类的加载，方法出入，线程始末等等
+> 不同需求场景下，可以不同的方式实现切面拦截逻辑；  
+> AspectJ或者SpringAop只是一种对开发者友好的快捷方式，本质上还是修改的业务代码，只不过隐藏了调用逻辑，并不能真正“无侵入“；  
+> javaagent可以无侵入的修改一个已发布的java组件的运行逻辑。  
+> 修改某些字节或者替换整个二进制流可以修改运行时逻辑,工具集：/ASM/javaassist/ByteBuddy  
+> VMTI 提供了许多事件（Event）的回调，包括虚拟机初始化、开始运行、结束，类的加载，方法出入，线程始末等等  
 
 [Java ConcurrentHashMap 高并发安全实现原理解析](https://mp.weixin.qq.com/s/4sz6sTPvBigR_1g8piFxug)  
 > 这个vivo是下了功夫了
@@ -115,39 +115,40 @@
 
 [Java并发编程：并发容器之CopyOnWriteArrayList](http://www.cnblogs.com/dolphin0520/p/3938914.html)  
 > CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器  
-> 写操作复制出一个新的容器，然后新的容器里添加元素（加锁），读还是会读到旧的数据（不加锁）
+> 写操作复制出一个新的容器，然后新的容器里添加元素（加锁），读还是会读到旧的数据（不加锁）  
 
 [深入分析ConcurrentHashMap](http://ifeve.com/concurrenthashmap/)  
 > get方法里将要使用的共享变量都定义成volatile，java内存模型的happen before原则，对volatile字段的写入操作先于读操作  
 > put方法里需要对共享变量进行写入操作，所以为了线程安全，在操作共享变量时必须得加锁  
 > count方法先尝试两次不行再加锁，modCount变量，在put, remove和clean方法里操作元素前都会将变量modCount进行加1  
-> 那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化
+> 那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化  
 
 [Java 语言中锁的设计与应用](https://mp.weixin.qq.com/s/cGJxllpHskK4castfOJ_gw)  
-> 无锁(01): CAS 原理及应用即是无锁的实现。无锁无法全面代替有锁，但无锁在某些场合下的性能是非常高的。
-> 偏向锁(01): 在 Mark Word 里存储锁偏向的线程 ID。在线程进入和退出同步块时不再通过 CAS 操作来加锁和解锁，而是检测 Mark Word 里是否存储着指向当前线程的偏向锁。
-> 轻量级锁(00): 指当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。
-> 重量级锁(10): 若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。
-> 公平锁 VS 非公平锁(ReentrantLock): 源码区别hasQueuedPredecessors():主要是判断当前线程是否位于同步队列中的第一个。如果是则返回 true，否则返回 false。
-> 可重入锁 VS 非可重入锁(NonReentrantLock): 其父类 AQS 中维护了一个同步状态 status 来计数重入次数，status 初始值为 0。
-> 独享锁 VS 共享锁(ReentrantReadWriteLock): 将 state 变量 “按位切割” 切分成了两个部分，高 16 位表示读锁状态（读锁个数），低 16 位表示写锁状态（写锁个数）。
+> 无锁(01): CAS 原理及应用即是无锁的实现。无锁无法全面代替有锁，但无锁在某些场合下的性能是非常高的。  
+> 偏向锁(01): 在 Mark Word 里存储锁偏向的线程 ID。在线程进入和退出同步块时不再通过 CAS 操作来加锁和解锁，而是检测 Mark Word 里是否存储着指向当前线程的偏向锁。  
+> 轻量级锁(00): 指当锁是偏向锁的时候，被另外的线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，从而提高性能。  
+> 重量级锁(10): 若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。  
+> 公平锁 VS 非公平锁(ReentrantLock): 源码区别hasQueuedPredecessors():主要是判断当前线程是否位于同步队列中的第一个。如果是则返回 true，否则返回 false。  
+> 可重入锁 VS 非可重入锁(NonReentrantLock): 其父类 AQS 中维护了一个同步状态 status 来计数重入次数，status 初始值为 0。  
+> 独享锁 VS 共享锁(ReentrantReadWriteLock): 将 state 变量 “按位切割” 切分成了两个部分，高 16 位表示读锁状态（读锁个数），低 16 位表示写锁状态（写锁个数）。  
 
 [自动的内存管理系统实操手册——Java垃圾回收篇](https://mp.weixin.qq.com/s/KqsFuvTo_M5w7xoYe0gGrw)
-> Java 堆和方法区是垃圾收集器管理的主要区域
-> 对象晋升到老年代的年龄阈值，可以通过参数-XX:MaxTenuringThreshold来设置
-> 当对象没有覆盖finalize方法，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行第一次标记
-> 标记清除算法（适合old）: 1.空间问题，易产生内存碎片；2.效率问题，扫描了整个空间两次
-> 标记复制算法（适合young）: 需要一块儿空的内存空间，整理阶段，由于移动了可用对象，需要去更新引用。
-> 标记整理算法 (适合old): 在清理时，是先把所有存活对象往一端移动，然后直接清掉边界以外的内存。
+> Java 堆和方法区是垃圾收集器管理的主要区域  
+> 对象晋升到老年代的年龄阈值，可以通过参数-XX:MaxTenuringThreshold来设置  
+> 当对象没有覆盖finalize方法，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行第一次标记  
+> 标记清除算法（适合old）: 1.空间问题，易产生内存碎片；2.效率问题，扫描了整个空间两次  
+> 标记复制算法（适合young）: 需要一块儿空的内存空间，整理阶段，由于移动了可用对象，需要去更新引用。  
+> 标记整理算法 (适合old): 在清理时，是先把所有存活对象往一端移动，然后直接清掉边界以外的内存。  
 
 [自动的内存管理系统实操手册——Golang垃圾回收篇](https://mp.weixin.qq.com/s/yEPCSzBvp1SqkyOcx2r1jQ)
 
 [自动的内存管理系统实操手册——Java和Golang对比篇](https://mp.weixin.qq.com/s/1DZ8ENjsxrKypjr2RGhruQ)
-> 触发垃圾回收的时机：Java当应用程序空闲时，Java堆内存不足时，GC会被调用；Go runtime.mallocgc申请内存时根据堆大小触发GC，runtime.GC用户程序手动触发GC，runtime.forcegchelper后台运行定时检查触发GC
-> 收集算法：当前Java虚拟机的垃圾收集采用分代收集算法，当前Go的都是基于标记清除算法进行垃圾回收
-> 垃圾碎片处理：JVM在处理内存碎片问题上更多采用空间压缩和分代收集的思想；Go语言span内存池的设计，减轻了很多内存碎片的问题
-> “GC Roots” 的对象选择：Go的选择就相对简单一点，即全局变量和G Stack中的引用指针，简单来说就是全局量和go程中的引用指针。
-> 写屏障：CMS是基于“Dijkstra插入写屏障”做并发标记的，G1、Shenandoah则是使用“Yuasa删除写屏障”来实现的；
+> 触发垃圾回收的时机：Java当应用程序空闲时，Java堆内存不足时，GC会被调用；Go runtime.mallocgc申请内存时根据堆大小触发GC，runtime.GC用户程序手动触发GC，runtime.forcegchelper后台运行定时检查触发GC  
+> 收集算法：当前Java虚拟机的垃圾收集采用分代收集算法，当前Go的都是基于标记清除算法进行垃圾回收  
+> 垃圾碎片处理：JVM在处理内存碎片问题上更多采用空间压缩和分代收集的思想；Go语言span内存池的设计，减轻了很多内存碎片的问题  
+> “GC Roots” 的对象选择：Go的选择就相对简单一点，即全局变量和G Stack中的引用指针，简单来说就是全局量和go程中的引用指针。  
+> 写屏障：CMS是基于“Dijkstra插入写屏障”做并发标记的，G1、Shenandoah则是使用“Yuasa删除写屏障”来实现的；  
+
 ![20210823143918.jpg](pic/20210823143918.jpg)
 
 [上篇 | 说说无锁(Lock-Free)编程那些事](https://mp.weixin.qq.com/s/T_z2_gsYfs6A-XjVTVV_uQ)  
@@ -160,12 +161,11 @@
 ## OKHttp Protobuf GRPC TOMCAT
 
 [OkHttp3线程池相关之Dispatcher中的ExecutorService](https://github.com/soulrelay/InterviewMemoirs/issues/7)  
-> OkHttp不是在线程池中维护线程的个数，线程是一直在Dispatcher中直接控制。
-> 线程池中的请求都是运行中的请求。这也就是说线程的重用不是线程池控制的，通过源码我们发现线程重用的地方是请求结束的地方finished(AsyncCall call) ，而真正的控制是通过promoteCalls方法， 根据maxRequests和maxRequestsPerHost来调整runningAsyncCalls和readyAsyncCalls，使运行中的异步请求不超过两种最大值，并且如果队列有空闲，将就绪状态的请求归类为运行中
+> OkHttp不是在线程池中维护线程的个数，线程是一直在Dispatcher中直接控制。  
+> 线程池中的请求都是运行中的请求。这也就是说线程的重用不是线程池控制的，通过源码我们发现线程重用的地方是请求结束的地方finished(AsyncCall call) ，而真正的控制是通过promoteCalls方法， 根据maxRequests和maxRequestsPerHost来调整runningAsyncCalls和readyAsyncCalls，使运行中的异步请求不超过两种最大值，并且如果队列有空闲，将就绪状态的请求归类为运行中  
 
 [奇怪的知识： okhttp 是如何支持 Http2 的？](https://mp.weixin.qq.com/s/TeQhe4T4wRjdAEPz6Ne45g)  
-> 在一个 TCP 连接上，我们可以向对方不断发送帧，每帧的 stream identifier 的标明这一帧属于哪个流，然后在对方接收时，根据 stream identifier 拼接每个流的所有帧组成一整块数据。
-> 
+> 在一个 TCP 连接上，我们可以向对方不断发送帧，每帧的 stream identifier 的标明这一帧属于哪个流，然后在对方接收时，根据 stream identifier 拼接每个流的所有帧组成一整块数据。  
 
 * Grpc协议
 > gRPC 协议，简单来说就是 http2 协议的基础之上，增加了特定的协议 header：“grpc-” 开头的 header 字段，采用特定的打解包工具（protobuf）对数据进行序列化，从而实现 RPC 调用。  
@@ -191,9 +191,9 @@
 [深入了解 gRPC：协议](https://mp.weixin.qq.com/s/GEaTUTp_wuILYTVbZvJo7g)  
 
 [程序员如何用gRPC谈一场恋爱](https://mp.weixin.qq.com/s/Y2sHs_Sq4lB3hBhKGSvaNg)
-> A client-to-server streaming RPC :1.agent上报CPU，内存等数据到server;2.客户端心跳;3.客户端并发调用细小粒度的接口。  
-> A server-to-client streaming RPC :1.股票app。客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端;2.app的在线push。
-> A Bidirectional streaming RPC 1.聊天机器人;2.有状态的游戏服务器进行数据交换。
+> A client-to-server streaming RPC :1.agent上报CPU，内存等数据到server;2.客户端心跳;3.客户端并发调用细小粒度的接口。    
+> A server-to-client streaming RPC :1.股票app。客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回给客户端;2.app的在线push。  
+> A Bidirectional streaming RPC 1.聊天机器人;2.有状态的游戏服务器进行数据交换。  
 
 [巧用 Protobuf 反射来优化代码，拒做 PB Boy](https://mp.weixin.qq.com/s/ALhSKrLwNdA_GkozJQXn5g)  
 > 获取 PB 中所有非空字段：bool has_field = reflection->HasField(message, field)  
@@ -273,7 +273,7 @@
 [JAVA.IO.IOEXCEPTION: CONNECTION RESET BY PEER问题解决](https://www.freesion.com/article/3680678097/)
 > 当并发请求超过服务器的承载量时，服务器会停掉一些请求。  
 > 客户端关闭了  
-> 防火墙/nginx影响了,1>高并发的处理;2>防DDOS攻击;3>爬虫扫描等等
+> 防火墙/nginx影响了,1>高并发的处理;2>防DDOS攻击;3>爬虫扫描等等  
 
 [https连接的前几毫秒发生了什么](https://www.rrfed.com/2017/02/03/https/)  
 https解决什么问题:1.域名污染/2.APR欺骗  
@@ -301,15 +301,15 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 > Redis 里的 List 设计非常牛，当数据量比较小的时候，数据结构是压缩链表，而当数据量比较多的时候就成为了快速链表。  
 > hash 的扩容 rehash 过程就是维护了两个 hash 结构，如果需要扩容的时候，就把新的数据写入新字典中，然后后端起一个线程来逐步迁移，总体上来说就是采用了空间换时间的思想。  
 > 对于上游的客户端请求，采用了多路复用的原理。Redis 会给每一个客户端套接字都关联一个指令队列，客户端的指令队列通过队列排队来进行顺序处理，同时 Reids 给每一个客户端的套件字关联一个响应队列，Redis 服务器通过响应队列来将指令的接口返回给客户端  
-> 在 Redis 4.0 之后，支持了混合持久化 RDB + 增量的 AOF 文件
+> 在 Redis 4.0 之后，支持了混合持久化 RDB + 增量的 AOF 文件  
 
 [这篇Redis文章，Antirez看了都说好](https://mp.weixin.qq.com/s/DCngASQ7gsKpFA2JHCH7Sg)  
 > mem_fragmentation_ratio一般大于1，且该值越大，内存碎片比例越大。如果mem_fragmentation_ratio<1，说明Redis使用了虚拟内存，由于虚拟内存的媒介是磁盘，比内存速度要慢很多，当这种情况出现时，应该及时排查，如果内存不足应该及时处理  
 
 [聊一聊Redis持久化开与关](https://mp.weixin.qq.com/s/TZnDk_5qScLFPGPhwrxTQA)
-> RDB备份：格式多变（Redis 3 4 5 6版本多次修改）
-> AOF备份：加载慢：利用fakeclient做回放，AOF重写还是动作不，开启AOF后，Redis的写性能下降了8~25%，读性能未下降
-> RDB-AOF混合：持久化文件全量使用RDB，增量使用AOF，保证体积、实时性、加载速度。
+> RDB备份：格式多变（Redis 3 4 5 6版本多次修改）  
+> AOF备份：加载慢：利用fakeclient做回放，AOF重写还是动作不，开启AOF后，Redis的写性能下降了8~25%，读性能未下降  
+> RDB-AOF混合：持久化文件全量使用RDB，增量使用AOF，保证体积、实时性、加载速度。  
 
 [Redis小功能大用处(1)  -stat_expired_time_cap_reached_count](https://mp.weixin.qq.com/s/3UxXnSus0HTlA0ndpLZPgg)  
 
@@ -328,7 +328,7 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 [替你踩过Redis缓存的坑，奉上使用规范和监控方法](https://mp.weixin.qq.com/s/R-slZDV2YNTA_M_sctyvZA)  
 
 [Redis为什么变慢了？Redis性能问题排查详述](https://mp.weixin.qq.com/s/gYQn9tdFK9tHJDoMWcU4cQ)  
-> 超级实用，建议看原文
+> 超级实用，建议看原文  
 
 [运维：终于不用再背着数万实例的Redis集群了](https://mp.weixin.qq.com/s/F5Wn6OWKzswA4tg2fHrevw)  
 
@@ -540,8 +540,8 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 > 3）监控worker进程的运行状态。比如ngx_reap代表CHILD信号，表示有子进程意外结束，这时需要监控所有子进程的运行状态，主要由ngx_reap_children完成。  
 > 4）当woker进程退出后（异常情况下），会自动重新启动新的woker进程。主要也是在ngx_reap_children。  
 > Nginx热更配置，具体流程：master使用新配置启动新的worker，旧的worker不再接受新的请求。  
-> Nginx热更配置，具体流程：新旧master和worker共存。向老master发送WINCH信号，关闭旧worker进程，观察新worker进程工作情况。若升级成功，则向老master进程发送QUIT信号，关闭老master进程
-> epoll利用红黑树高效的增删查效率来管理连接，利用一个双向链表来维护活跃连接  
+> Nginx热更配置，具体流程：新旧master和worker共存。向老master发送WINCH信号，关闭旧worker进程，观察新worker进程工作情况。若升级成功，则向老master进程发送QUIT信号，关闭老master进程  
+> epoll利用红黑树高效的增删查效率来管理连接，利用一个双向链表来维护活跃连接   
 > 多个worker来出来accept事件冲突：设置ngx_accept_mutex锁，只有获得锁的进程，才可以处理连接事件  
 > 为什么不采用多线程模型管理连接/处理逻辑业务？ 无状态服务，无需共享进程内存;一个进程异常崩溃，其他进程的服务不会中断，提升了架构的可靠性;作为接入层，基本上都是数据转发业务，网络IO任务的等待耗时部分，已经被处理为非阻塞/全异步/事件驱动模式，在没有更多CPU的情况下，再利用多线程处理，意义不大  
 
@@ -574,9 +574,9 @@ RSA加密和解密,密钥交换Key Exchange(证书被偷也没事)
 > 看不懂  
 
 [分布式一致性算法 Raft](https://mp.weixin.qq.com/s/obnZm2Lhf_rKla2AxbrBlg)  
-> 首先选出 leader，leader 节点负责接收外部的数据更新 / 删除请求；
-> 然后日志复制到其他 follower 节点，同时通过安全性的准则来保证整个日志复制的一致性；
-> 如果遇到 leader 故障，followers 会重新发起选举出新的 leader；
+> 首先选出 leader，leader 节点负责接收外部的数据更新 / 删除请求；  
+> 然后日志复制到其他 follower 节点，同时通过安全性的准则来保证整个日志复制的一致性；  
+> 如果遇到 leader 故障，followers 会重新发起选举出新的 leader；  
 > 为了解决数据不一致性，Raft 算法规定 follower 强制复制 leader 节日的日志，即 follower 不一致日志都会被 leader 的日志覆盖，最终 follower 和 leader 保持一致
 > 只有当前任期且复制超过半数的日志才可以提交  
 
