@@ -408,6 +408,35 @@ codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子
 * 拒绝深度分页  
 * 禁止查询 indexName-*  
 
+[Elasticsearch分布式一致性原理剖析(一)-节点篇](https://zhuanlan.zhihu.com/p/34830403)  
+1 扩容DataNode  
+2 缩容DataNode 我们需要把这个Node上的Shards迁移到其他节点上，方法是先设置allocation规则，禁止分配Shard到要缩容的机器上，然后让集群进行rebalance。  
+3 扩容MasterNode 假设之前3个master-eligible node，我们可以配置quorum为2，如果扩容到4个master-eligible node，那么quorum就要提高到3。  
+4 缩容MasterNode  
+ES的leader选举：  
+**是否有选举周期term**：raft引入了选举周期的概念，每轮选举term加1，保证了在同一个term下每个参与人只能投1票。ES在选举时没有term的概念，不能保证每轮每个节点只投一票。  
+**选举的倾向性**：raft中只要一个节点拥有最新的已提交的数据，则有机会选举成为master。在ES中，version相同时会按照NodeId排序，总是NodeId小的人优先级高。 
+
+[Elasticsearch分布式一致性原理剖析(二)-Meta篇](https://zhuanlan.zhihu.com/p/35283785)  
+MetaData是由Master管理的，为什么DataNode上也要保存MetaData呢？主要原因是考虑到数据的安全性，很多用户没有考虑Master节点的高可用和数据高可靠，在部署ES集群时只配置了一个MasterNode，如果这个节点不可用，就会出现Meta丢失，后果非常严重。  
+
+[Elasticsearch分布式一致性原理剖析(三)-Data篇](https://zhuanlan.zhihu.com/p/35285514)  
+* ES写入流程为先写入Primary，再并发写入Replica，最后应答客户端  
+**waitforactiveshards** 这个参数默认是1，即只要Primary在就可以写入，起不到什么作用。如果配置大于1，可以起到一种保护的作用，保证写入的数据具有更高的可靠性。  
+**为何要等待所有Replica响应(或连接失败)后返回?**  
+在更早的ES版本，Primary和Replica之间是允许异步复制的，即写入Primary成功即可返回。  
+如果Replica写入失败，ES会执行一些重试逻辑等，但最终并不强求一定要在多少个节点写入成功。在返回的结果中，会包含数据在多少个shard中写入成功了，多少个失败了  
+**如果某个Replica持续写失败，用户是否会经常查到旧数据？**  
+如果一个Replica写失败了，Primary会将这个信息报告给Master，然后Master会在Meta中更新这个Index的InSyncAllocations配置，将这个Replica从中移除，移除后它就不再承担读请求。  
+**为什么要写translog？**  
+1. translog类似于数据库中的commitlog，或者binlog。只要translog写入成功并flush，那么这笔数据就落盘了，数据安全性有了保证，Segment就可以晚一点落盘。  
+2. translog记录了每一笔数据更改，以及数据更改的顺序，所以translog也可以用于数据恢复。  
+3. 用于Primary和新的Replica之间的数据同步，即Replica逐步追上Primary数据的过程。  
+**PacificA算法** 是微软亚洲研究院提出的一种用于日志复制系统的分布式一致性算法  
+Reconfiguration：Secondary故障，Primary故障，新加节点  
+SequenceNumber、Checkpoint与故障恢复  
+LocalCheckpoint和GlobalCheckpoint  
+
 [Elasticsearch内核解析 - 写入篇](https://zhuanlan.zhihu.com/p/34669354)  
 * ES的写操作是primary写入完成之后，同时给replica
 源码位置：org.elasticsearch.action.support.replication.ReplicationOperation#execute
@@ -422,19 +451,67 @@ codis提供了异步的数据迁移方案（其中对大key拆分迁移的原子
 四是每个线程持有一个Segment，多线程时相互不影响，相互独立，性能更好；  
 五是系统的写入流程对版本依赖较重，读取频率较高，因此采用了versionMap，减少热点数据的多次磁盘IO开销。  
 
-[Elasticsearch分布式一致性原理剖析(一)-节点篇](https://zhuanlan.zhihu.com/p/34830403)  
-1 扩容DataNode  
-2 缩容DataNode 我们需要把这个Node上的Shards迁移到其他节点上，方法是先设置allocation规则，禁止分配Shard到要缩容的机器上，然后让集群进行rebalance。  
-3 扩容MasterNode 假设之前3个master-eligible node，我们可以配置quorum为2，如果扩容到4个master-eligible node，那么quorum就要提高到3。  
-4 缩容MasterNode  
-ES的leader选举：  
-**是否有选举周期term**：raft引入了选举周期的概念，每轮选举term加1，保证了在同一个term下每个参与人只能投1票。ES在选举时没有term的概念，不能保证每轮每个节点只投一票。  
-**选举的倾向性**：raft中只要一个节点拥有最新的已提交的数据，则有机会选举成为master。在ES中，version相同时会按照NodeId排序，总是NodeId小的人优先级高。 
-
-[Elasticsearch分布式一致性原理剖析(二)-Meta篇](https://zhuanlan.zhihu.com/p/35283785)  
-
-
 [Elasticsearch调优实践](https://mp.weixin.qq.com/s/0TMESj2Z-XK2PzwBQo0Mpg)  
+```
+一 Linux参数调优
+mount -o noatime,data=writeback,barrier=0,nobh /dev/sda /es_data
+
+二 ES 节点配置
+1. 适当增大写入 buffer 和 bulk 队列长度，提高写入性能和稳定性
+2. 计算 disk 使用量时，不考虑正在搬迁的 shard
+cluster.routing.allocation.disk.include_relocations: false
+
+三 ES 使用方式
+1. 控制字段的存储选项 
+    StoreFiled： 行存，其中占比最大的是 source 字段，它控制 doc 原始数据的存储。
+    注意：关闭 source 后， update, updatebyquery, reindex 等接口将无法正常使用，所以有 update 等需求的 index 不能关闭 source。
+    docvalues：控制列存. ES 主要使用列存来支持 sorting, aggregations 和 scripts 功能，对于没有上述需求的字段，可以关闭 docvalues，降低存储成本。
+    index：控制倒排索引。ES 默认对于所有字段都开启了倒排索引，用于查询。对于没有查询需求的字段，可以关闭倒排索引。
+    all(6.0+版本已删除)：ES 的一个特殊的字段，ES 把用户写入 json 的所有字段值拼接成一个字符串后，做分词，然后保存倒排索引，用于支持整个 json 的全文检索。
+    fieldnames：该字段用于 exists 查询，来确认某个 doc 里面有无一个字段存在。若没有这种需求，可以将其关闭。
+2. 开启最佳压缩
+3. bulk 批量写入
+    每个 bulk 请求的 doc 数量设定区间推荐为 1k~1w
+4. 调整 translog 同步策略
+    "sync_interval": "60s"
+    "durability": "async"
+5. 调整 refresh_interval
+    ES 必须通过 refresh 的过程把内存中的数据转换成 Lucene 的完整 segment 后，才可以被搜索。
+6. merge 并发控制
+    "index.merge.scheduler.max_thread_count": 2
+7. 写入数据不指定_id，让 ES 自动产生
+    无 id 的数据写入性能可能比有_id 的高出近一倍
+8. 使用 routing
+    启 routing 功能后，ES 会将 routing 相同的数据写入到同一个分片中（也可以是多个，由 index.routingpartitionsize 参数控制）。
+9. 为 string 类型的字段选取合适的存储方式
+    string 字段默认类型为 text
+    存为 keyword 类型的字段： 不做分词，不支持全文检索。
+10. 查询时，使用 query-bool-filter 组合取代普通 query
+    通过 query-bool-filter 组合来让 ES 不计算 score，并且尽可能的缓存 filter 的结果集，供后续包含相同 filter 的查询使用，提高查询效率。
+11.index 按日期滚动，便于管理
+    好处是各种数据分开管理不会混淆，也易于提高查询效率。数据过期时删除整个 index，要比一条条删除数据或 deletebyquery 效率高很多
+12. 按需控制 index 的分片数和副本数
+    shard 数量过多，则批量写入 / 查询请求被分割为过多的子写入 / 查询，导致该 index 的写入、查询拒绝率上升；
+    对于数据量较大的 index，当其 shard 数量过小时，无法充分利用节点资源，造成机器资源利用率不高 或 不均衡，影响写入 / 查询的效率。
+    对于数据较大的index：
+        可通过 index.routing.allocation.totalshardsper_node 参数，强制限定一个节点上该 index 的 shard 数量，让 shard 尽量分配到不同节点上
+    综合考虑整个 index 的 shard 数量，如果 shard 数量（不包括副本）超过 50 个，就很可能引发拒绝率上升的问题，
+    此时可考虑把该 index 拆分为多个独立的 index，分摊数据量，同时配合 routing 使用，降低每个查询需要访问的 shard 数量。
+
+1. 节点数较多的集群，增加专有 master，提升集群稳定性
+    ES 集群的元信息管理、index 的增删操作、节点的加入剔除等集群管理的任务都是由 master 节点来负责的，master 节点定期将最新的集群状态广播至各个节点。
+    master 节点，这些节点只负责集群管理，不存储数据，不承担数据读写压力；其他节点则仅负责数据读写，不负责集群管理的工作。
+2. 控制 index、shard 总数量
+    基础架构部数据库团队曾经在一个 20 个节点的集群里，创建了 4w + 个 shard，导致新建一个 index 需要 60s + 才能完成。
+3. Segment Memory 优化
+    当集群的数据量过大时，SegmentMemory 会吃掉大量的堆内存，而 JVM 内存空间又有限，此时就需要想办法降低 SegmentMemory 的使用量了，常用方法有下面几个
+        定期删除不使用的 index
+        对于不常访问的 index，可以通过 close 接口将其关闭，用到时再打开
+        通过 force_merge 接口强制合并 segment，降低 segment 数量
+```
+[ES集群如何进行挨个重启?](https://elasticsearch.cn/question/4454)
+
+[禁用分片分配的问题](https://elasticsearch.cn/question/4407)  
 cluster.routing.allocation.enable: "none"，实际上影响的是已有索引(local存在)  的replica，以及新创建索引的primary和replica。  
 
 [亿级日增量的ES线上环境集群部署，上干货！](https://mp.weixin.qq.com/s/8PjfMqZGDkOk_hv4iIaqNg)  
